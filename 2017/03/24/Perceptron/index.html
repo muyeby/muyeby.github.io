@@ -87,16 +87,16 @@
 
 
 
-<meta name="description" content="感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版下面说的是怎样用感知器实现一个词性标注器。">
+<meta name="description" content="感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版下面说的是感知机原形式与对偶形式的Python代码实现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="感知器实战（Perceptron）">
+<meta property="og:title" content="感知器原理与实战（Perceptron）">
 <meta property="og:url" content="http://muyeby.github.io/2017/03/24/Perceptron/index.html">
 <meta property="og:site_name" content="Muyeby's Blog">
-<meta property="og:description" content="感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版下面说的是怎样用感知器实现一个词性标注器。">
-<meta property="og:updated_time" content="2017-03-24T08:54:18.000Z">
+<meta property="og:description" content="感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版下面说的是感知机原形式与对偶形式的Python代码实现">
+<meta property="og:updated_time" content="2017-04-09T02:17:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="感知器实战（Perceptron）">
-<meta name="twitter:description" content="感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版下面说的是怎样用感知器实现一个词性标注器。">
+<meta name="twitter:title" content="感知器原理与实战（Perceptron）">
+<meta name="twitter:description" content="感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版下面说的是感知机原形式与对偶形式的Python代码实现">
 
 
 
@@ -130,7 +130,7 @@
 
 
 
-  <title> 感知器实战（Perceptron） | Muyeby's Blog </title>
+  <title> 感知器原理与实战（Perceptron） | Muyeby's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -300,7 +300,7 @@
             
             
               
-                感知器实战（Perceptron）
+                感知器原理与实战（Perceptron）
               
             
           </h1>
@@ -365,7 +365,7 @@
 
           
           
-             <span id="/2017/03/24/Perceptron/" class="leancloud_visitors" data-flag-title="感知器实战（Perceptron）">
+             <span id="/2017/03/24/Perceptron/" class="leancloud_visitors" data-flag-title="感知器原理与实战（Perceptron）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -394,8 +394,162 @@
       
 
       
-        <p>感知器原理要写的公式太多了，所以直接看PDF版吧：)<br><a href="https://github.com/muyeby/BlogDoc/blob/master/latex%2Bpdf/Perceptron.pdf" target="_blank" rel="external">感知器原理 pdf版</a><br>下面说的是怎样用感知器实现一个词性标注器。</p>
-<a id="more"></a>
+        <p>感知器原理要写的公式太多了，所以直接看PDF版吧：)<br><a href="https://github.com/muyeby/BlogDoc/blob/master/latex%2Bpdf/Perceptron.pdf" target="_blank" rel="external">感知器原理 pdf版</a><br>下面说的是感知机原形式与对偶形式的Python代码实现<br><a id="more"></a></p>
+<pre><code>#!/usr/bin/env python
+# encoding: utf-8
+&quot;&quot;&quot;
+@version: v1.0
+@author: muyeby
+@contact: bxf_hit@163.com
+@site: http://muyeby.github.io
+@software: PyCharm
+@file: Perceptron.py
+@time: 17-4-8 下午4:21
+&quot;&quot;&quot;
+import copy
+import numpy as np
+
+class BasePerceptron(object):
+    &apos;&apos;&apos;Class BasePerceptron&apos;&apos;&apos;
+    def __init__(self,learnRate):
+    &apos;&apos;&apos;
+    :param learnRate: 学习率
+    :param Dual: 是否使用对偶形式
+    &apos;&apos;&apos;
+    self.learnRate = learnRate
+    self.History=[]
+
+class Perceptron(BasePerceptron):
+    &apos;&apos;&apos;An implementation of Perceptron
+    Attributes:
+    trainData: 训练数据
+    learnRate: 感知器学习率
+    Results:
+    w:超平面参数w
+    b:超平面截距b
+    History: 超平面变动过程记录
+    &apos;&apos;&apos;
+    def train(self,trainData):
+    self.Data = trainData
+    self.y = np.array(trainData[:, 1])
+    self.x = np.empty((len(trainData), 2), np.float)
+    for i in range(len(trainData)):
+        self.x[i] = trainData[i][0]
+    self.w = np.zeros(len(self.x[0]), np.float)
+    self.b = 0.0
+    for i in range(1000):
+        if not self.Judge():
+            # print &quot;Can&apos;t find a result within 1000 iterations!\n&quot;
+            break
+    return self.w,self.b,self.History
+
+    def Judge(self):
+    flag = False
+    for i in range(len(self.Data)):
+        if self.calc(i) &lt;= 0:
+            flag = True
+            self.update(i)
+    if not flag:
+        print &quot;Result: w = &quot; + str(self.w) + &quot; b = &quot; + str(self.b)
+    return flag
+
+    def calc(self,i):
+    &apos;&apos;&apos;
+    计算 (w*x+b)*y
+    :param i 第i组元素
+    :return: (w*x+b)*y
+    &apos;&apos;&apos;
+    res = np.dot(self.w,self.x[i])
+    res += self.b
+    res *= self.y[i]
+    return res
+    def update(self,i):
+    &apos;&apos;&apos;
+    更新超平面
+    w = w + eta*x[i]*y[i]
+    b = b+ eta*y[i]
+    :param i: 第i组元素
+    &apos;&apos;&apos;
+    self.w += self.learnRate * self.y[i]*self.x[i]
+    self.b += self.learnRate * self.y[i]
+    self.History.append([copy.copy(self.w), self.b])
+
+class DualPerceptron(BasePerceptron):
+    &apos;&apos;&apos;An implementation of Dual Perceptron 
+    Attributes:
+    trainData: 训练数据
+    learnRate: 感知器学习率
+    Results:
+    w:超平面参数w
+    b:超平面截距b
+    History: 超平面变动过程记录
+    &apos;&apos;&apos;
+    def train(self,trainData):
+    self.Data = trainData
+    self.y = np.array(trainData[:, 1])
+    self.x = np.empty((len(trainData), 2), np.float)
+    for i in range(len(trainData)):
+        self.x[i] = trainData[i][0]
+    self.n = np.zeros(len(trainData), np.float)
+    self.b = 0.0
+    self.Gram = self.calGram(self.Data)
+    for i in range(1000):
+        if not self.Judge():
+            # print &quot;Can&apos;t find a result within 1000 iterations!\n&quot;
+            break
+    a = self.learnRate * self.n
+    w = np.dot(a * self.y, self.x)
+    return w,self.b,self.History
+
+    def calGram(self,data):
+    &quot;&quot;&quot;
+        calculate the Gram matrix
+        :return:
+        &quot;&quot;&quot;
+    g = np.empty((len(data), len(data)), np.float)
+    for i in range(len(data)):
+        for j in range(len(data)):
+            g[i][j] = np.dot(data[i][0], data[j][0])
+    return g
+
+    def Judge(self):
+    &apos;&apos;&apos;
+    判断是否存在误分类的点
+    :return: boolean 
+    &apos;&apos;&apos;
+    flag = False
+    for i in range(len(self.Data)):
+        if self.calc(i) &lt;= 0:
+            flag = True
+            self.update(i)
+    if not flag:
+        a = self.learnRate * self.n
+        w = np.dot(a * self.y, self.x)
+        b = np.dot(a, self.y)
+        print &quot;Result: w = &quot; + str(w) + &quot; b = &quot; + str(b)
+    return flag
+    def calc(self,i):
+    &apos;&apos;&apos;
+        计算y*(w*x+b)是否&lt;=0
+        :param i: 
+        &apos;&apos;&apos;
+    a = self.learnRate * self.n
+    res = np.dot(a * self.y, self.Gram[i])
+    res = (res + self.b) * self.y[i]
+    return res
+
+    def update(self,i):
+    &apos;&apos;&apos;
+    更新操作
+    如果误分类，则该项的累加次数+1
+    :param i:第i个对象 
+    &apos;&apos;&apos;
+    global n, b
+    self.n[i] += 1
+    a = self.learnRate * self.n  # a = n*eta
+    self.b = np.dot(a, self.y)  # b = a*y
+    self.History.append([np.dot(a * self.y, self.x), self.b])  # w = a*y*x
+</code></pre>
       
     </div>
 
@@ -472,7 +626,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/03/24/Perceptron/"
-           data-title="感知器实战（Perceptron）" data-url="http://muyeby.github.io/2017/03/24/Perceptron/">
+           data-title="感知器原理与实战（Perceptron）" data-url="http://muyeby.github.io/2017/03/24/Perceptron/">
       </div>
     
   </div>
