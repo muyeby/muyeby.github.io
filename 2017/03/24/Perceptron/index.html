@@ -87,22 +87,22 @@
 
 
 
-<meta name="description" content="##模型原理感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版 
-##代码实现下面说的是感知机原形式与对偶形式的Python代码实现">
+<meta name="description" content="模型原理感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版 
+代码实现下面说的是感知机原形式与对偶形式的Python代码实现">
 <meta property="og:type" content="article">
 <meta property="og:title" content="感知器原理与实战（Perceptron）">
 <meta property="og:url" content="http://muyeby.github.io/2017/03/24/Perceptron/index.html">
 <meta property="og:site_name" content="Muyeby's Blog">
-<meta property="og:description" content="##模型原理感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版 
-##代码实现下面说的是感知机原形式与对偶形式的Python代码实现">
-<meta property="og:image" content="https://github.com/muyeby/MlInAction/blob/master/perceptron1.gif">
-<meta property="og:image" content="https://github.com/muyeby/MlInAction/blob/master/perceptron2.gif">
-<meta property="og:updated_time" content="2017-04-09T02:53:53.000Z">
+<meta property="og:description" content="模型原理感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版 
+代码实现下面说的是感知机原形式与对偶形式的Python代码实现">
+<meta property="og:image" content="http://7xigyc.com1.z0.glb.clouddn.com/perceptron1.gif">
+<meta property="og:image" content="http://7xigyc.com1.z0.glb.clouddn.com/perceptron2.gif">
+<meta property="og:updated_time" content="2017-04-09T03:17:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="感知器原理与实战（Perceptron）">
-<meta name="twitter:description" content="##模型原理感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版 
-##代码实现下面说的是感知机原形式与对偶形式的Python代码实现">
-<meta name="twitter:image" content="https://github.com/muyeby/MlInAction/blob/master/perceptron1.gif">
+<meta name="twitter:description" content="模型原理感知器原理要写的公式太多了，所以直接看PDF版吧：)感知器原理 pdf版 
+代码实现下面说的是感知机原形式与对偶形式的Python代码实现">
+<meta name="twitter:image" content="http://7xigyc.com1.z0.glb.clouddn.com/perceptron1.gif">
 
 
 
@@ -400,9 +400,9 @@
       
 
       
-        <p>##模型原理<br>感知器原理要写的公式太多了，所以直接看PDF版吧：)<br><a href="https://github.com/muyeby/BlogDoc/blob/master/latex%2Bpdf/Perceptron.pdf" target="_blank" rel="external">感知器原理 pdf版</a> </p>
-<p>##代码实现<br>下面说的是感知机原形式与对偶形式的Python代码实现<br><a id="more"></a><br>关于具体原理pdf中已经讲的很清楚，下面来说一下代码实现的一些细节</p>
-<p>###感知器原形式参数更新<br>感知器的参数更新是错误驱动的，对于原形式误分类的(x[i],y[i])，w,b的更新如下：<br>    w = w + learnRate <em> x[i] </em> y[i]<br>    b  = b + learnRate * y[i]</p>
+        <h2 id="模型原理"><a href="#模型原理" class="headerlink" title="模型原理"></a>模型原理</h2><p>感知器原理要写的公式太多了，所以直接看PDF版吧：)<br><a href="https://github.com/muyeby/BlogDoc/blob/master/latex%2Bpdf/Perceptron.pdf" target="_blank" rel="external">感知器原理 pdf版</a> </p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>下面说的是感知机原形式与对偶形式的Python代码实现<br><a id="more"></a><br>关于具体原理pdf中已经讲的很清楚，下面来说一下代码实现的一些细节</p>
+<h3 id="感知器原形式参数更新"><a href="#感知器原形式参数更新" class="headerlink" title="感知器原形式参数更新"></a>感知器原形式参数更新</h3><p>感知器的参数更新是错误驱动的，对于原形式误分类的(x[i],y[i])，w,b的更新如下：<br>    w = w + learnRate <em> x[i] </em> y[i]<br>    b  = b + learnRate * y[i]</p>
 <pre><code>def update(self,i):
     &apos;&apos;&apos;
     感知器更新超平面
@@ -413,7 +413,7 @@
     self.w += self.learnRate * self.y[i]*self.x[i]
     self.b += self.learnRate * self.y[i]
     self.History.append([copy.copy(self.w), self.b])
-</code></pre><p>###感知器对偶形式参数更新<br>感知器对偶形式更新的是向量n，n[i]表示第i个实例点由于误分类而进行更新的次数,因此，对于每个误分类的点，n的更新就是<br>    n = n + 1<br>根据n可以得出w，b：<br>    w = learnRate <em> n </em> y <em> x    #这里的x，y是向量矩阵<br>    b = learnRate </em> n *y</p>
+</code></pre><h3 id="感知器对偶形式参数更新"><a href="#感知器对偶形式参数更新" class="headerlink" title="感知器对偶形式参数更新"></a>感知器对偶形式参数更新</h3><p>感知器对偶形式更新的是向量n，n[i]表示第i个实例点由于误分类而进行更新的次数,因此，对于每个误分类的点，n的更新就是<br>    n = n + 1<br>根据n可以得出w，b：<br>    w = learnRate <em> n </em> y <em> x    #这里的x，y是向量矩阵<br>    b = learnRate </em> n *y</p>
 <pre><code>def update(self,i):
     &apos;&apos;&apos;
     对偶感知器更新操作
@@ -425,9 +425,8 @@
     a = self.learnRate * self.n  # a = n*eta
     self.b = np.dot(a, self.y)  # b = a*y
     self.History.append([np.dot(a * self.y, self.x), self.b])  # w = a*y*x
-</code></pre><p>###完整代码实现与测试<br>完整的Perceptron代码：<br><a href="https://github.com/muyeby/MlInAction/blob/master/Perceptron.py" target="_blank" rel="external">https://github.com/muyeby/MlInAction/blob/master/Perceptron.py</a> </p>
-<p>一个简单的测试：</p>
-<pre><code>#!/usr/bin/env python
+</code></pre><h3 id="完整代码实现与测试"><a href="#完整代码实现与测试" class="headerlink" title="完整代码实现与测试"></a>完整代码实现与测试</h3><p>完整的Perceptron代码：<br><a href="https://github.com/muyeby/MlInAction/blob/master/Perceptron.py" target="_blank" rel="external">https://github.com/muyeby/MlInAction/blob/master/Perceptron.py</a> </p>
+<h4 id="一个简单的测试："><a href="#一个简单的测试：" class="headerlink" title="一个简单的测试："></a>一个简单的测试：</h4><pre><code>#!/usr/bin/env python
 # encoding: utf-8
 
 
@@ -508,8 +507,7 @@ if __name__ == &quot;__main__&quot;:
     per2 = DualPerceptron(1.0)
     w2,b2,history2 = per2.train(training_set)
     showPic(history2)
-</code></pre><p>运行结果：<br><img src="https://github.com/muyeby/MlInAction/blob/master/perceptron1.gif" alt="perceptron test1"> </p>
-<p><img src="https://github.com/muyeby/MlInAction/blob/master/perceptron2.gif" alt="perceptron test"> </p>
+</code></pre><h4 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h4><p><img src="http://7xigyc.com1.z0.glb.clouddn.com/perceptron1.gif" alt="perceptron test1"><br><img src="http://7xigyc.com1.z0.glb.clouddn.com/perceptron2.gif" alt="perceptron test2"></p>
 
       
     </div>
@@ -611,8 +609,17 @@ if __name__ == &quot;__main__&quot;:
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -674,6 +681,22 @@ if __name__ == &quot;__main__&quot;:
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型原理"><span class="nav-number">1.</span> <span class="nav-text">模型原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#感知器原形式参数更新"><span class="nav-number">2.1.</span> <span class="nav-text">感知器原形式参数更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感知器对偶形式参数更新"><span class="nav-number">2.2.</span> <span class="nav-text">感知器对偶形式参数更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整代码实现与测试"><span class="nav-number">2.3.</span> <span class="nav-text">完整代码实现与测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单的测试："><span class="nav-number">2.3.1.</span> <span class="nav-text">一个简单的测试：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行结果："><span class="nav-number">2.3.2.</span> <span class="nav-text">运行结果：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
