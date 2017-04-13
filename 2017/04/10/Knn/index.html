@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="机器学习," />
 
 
 
@@ -87,15 +87,20 @@
 
 
 
-<meta name="description" content="这是一个基于github和hexo的静态blog，用简单的markdown分享和记录自己的想法">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Muyeby's Blog">
-<meta property="og:url" content="http://muyeby.github.io/categories/NLP/index.html">
+<meta name="description" content="模型原理Knn的模型实际上对应着对特征空间的一个划分。模型由三个基本要素—距离度量，K值的选择和分类决策规则决定。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K近邻算法原理与实战（KNN）">
+<meta property="og:url" content="http://muyeby.github.io/2017/04/10/Knn/index.html">
 <meta property="og:site_name" content="Muyeby's Blog">
-<meta property="og:description" content="这是一个基于github和hexo的静态blog，用简单的markdown分享和记录自己的想法">
+<meta property="og:description" content="模型原理Knn的模型实际上对应着对特征空间的一个划分。模型由三个基本要素—距离度量，K值的选择和分类决策规则决定。">
+<meta property="og:image" content="http://7xigyc.com1.z0.glb.clouddn.com/knn2.png">
+<meta property="og:image" content="http://7xigyc.com1.z0.glb.clouddn.com/knn1.png">
+<meta property="og:image" content="http://7xigyc.com1.z0.glb.clouddn.com/kdtree_build.gif">
+<meta property="og:updated_time" content="2017-04-13T14:06:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Muyeby's Blog">
-<meta name="twitter:description" content="这是一个基于github和hexo的静态blog，用简单的markdown分享和记录自己的想法">
+<meta name="twitter:title" content="K近邻算法原理与实战（KNN）">
+<meta name="twitter:description" content="模型原理Knn的模型实际上对应着对特征空间的一个划分。模型由三个基本要素—距离度量，K值的选择和分类决策规则决定。">
+<meta name="twitter:image" content="http://7xigyc.com1.z0.glb.clouddn.com/knn2.png">
 
 
 
@@ -123,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://muyeby.github.io/categories/NLP/"/>
+  <link rel="canonical" href="http://muyeby.github.io/2017/04/10/Knn/"/>
 
 
 
 
 
-  <title> 分类: NLP | Muyeby's Blog </title>
+  <title> K近邻算法原理与实战（KNN） | Muyeby's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -164,7 +169,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-right  ">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,75 +273,224 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        NLP
-        <small>分类</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/23/KCCA/" itemprop="url">
-              
-                <span itemprop="name">核典型关联分析（Kernel Canonical Correlation Analysis）</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-23T22:15:30+08:00"
-              content="2017-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/23/CCA/" itemprop="url">
-              
-                <span itemprop="name">典型关联分析（Canonical Correlation Analysis）</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-23T08:30:20+08:00"
-              content="2017-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </section>
 
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://muyeby.github.io/2017/04/10/Knn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="muyeby">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Muyeby's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                K近邻算法原理与实战（KNN）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-10T16:15:30+08:00">
+                2017-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/那些年忘填的坑/" itemprop="url" rel="index">
+                    <span itemprop="name">那些年忘填的坑</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/10/Knn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/10/Knn/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/04/10/Knn/" class="leancloud_visitors" data-flag-title="K近邻算法原理与实战（KNN）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="模型原理"><a href="#模型原理" class="headerlink" title="模型原理"></a>模型原理</h2><p>Knn的模型实际上对应着对特征空间的一个划分。模型由三个基本要素—距离度量，K值的选择和分类决策规则决定。<br><a id="more"></a></p>
+<h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><p>特征空间中两个点的距离是两个实例点相似程度的反映，对n维实数向量空间Rn，经常用Lp距离或曼哈顿Minkowski距离。<br>具体各种距离的公式求解详见 《统计学习方法》P39</p>
+<h3 id="k值的选择"><a href="#k值的选择" class="headerlink" title="k值的选择"></a>k值的选择</h3><p>显然，K值的选择对knn的结果具有较大影响<br>如果K较小，则容易被邻近的噪声影响，发生过拟合，整体模型变复杂<br>如果K较大，相当于用较大邻域内的训练实例进行预测，但是较远的实例也会影响结果，容易发生错误<br>实际应用中，K一般会取一个比较小的值，采用交叉验证法来选取最优的K值</p>
+<h3 id="分类决策规则"><a href="#分类决策规则" class="headerlink" title="分类决策规则"></a>分类决策规则</h3><p>关于决策规则，我认为李航的书中写的十分精辟，我就不多说了，如下图：<br><img src="http://7xigyc.com1.z0.glb.clouddn.com/knn2.png" alt="knn-image2.2"> </p>
+<h2 id="模型实现"><a href="#模型实现" class="headerlink" title="模型实现"></a>模型实现</h2><p><img src="http://7xigyc.com1.z0.glb.clouddn.com/knn1.png" alt="knn-image1"><br>knn算法核心在于怎么快速搜索k个近邻出来，朴素做法是线性扫描，不可取，这里介绍的方法是kd树，除了kd树外还有BallTree，这里主要介绍kd树</p>
+<h3 id="构造平衡KD树"><a href="#构造平衡KD树" class="headerlink" title="构造平衡KD树"></a>构造平衡KD树</h3><ol>
+<li>对数据集T中的子集S初始化S=T，取当前节点node=root取维数的序数i=0</li>
+<li>对S递归执行：<ul>
+<li>找出S的第i维的中位数对应的点，通过该点，且垂直于第i维坐标轴做一个超平面。该点加入node的子节点。该超平面将空间分为两个部分</li>
+<li>对这两个部分分别重复此操作</li>
+<li>S=S’，++i，node=current,直到不可再分。</li>
+</ul>
+</li>
+</ol>
+<p>这样就完成了KD树的建立，也就是对特征空间的划分<br>这里有一个小实例，可以清楚地解释KD树对空间的划分过程：<br>数据集：T = [[2, 3], [5, 4], [9, 6], [4, 7], [8, 1], [7, 2]]<br><img src="http://7xigyc.com1.z0.glb.clouddn.com/kdtree_build.gif" alt="KNN-image2"><br>代码地址：<a href="https://github.com/muyeby/MlInAction/blob/master/KDTree.py" target="_blank" rel="external">https://github.com/muyeby/MlInAction/blob/master/KDTree.py</a> </p>
+<h3 id="搜索KD树"><a href="#搜索KD树" class="headerlink" title="搜索KD树"></a>搜索KD树</h3><p>KD树的作用是剪枝，减少计算距离的次数<br>解码器的算法可以简单描述如下(最近邻)：</p>
+<ol>
+<li>先通过折半查找找到测试实例所属的叶子节点</li>
+<li>以此节点作为最近的节点：</li>
+<li>递归向上回退，对每个节点进行以下操作：<ul>
+<li>如果此时的节点距离此节点更近，更新最小距离，则继续考察此节点的子节点</li>
+<li>若当前节点到实例节点的距离大于最小距离，则返回父节点，直到根节点为止</li>
+</ul>
+</li>
+</ol>
+<p>一个简单的实例：<br> <a href="https://github.com/muyeby/MlInAction/blob/master/Search_KDTree.py" target="_blank" rel="external">Search_KDTree</a>  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/24/Perceptron/" rel="next" title="感知器原理与实战（Perceptron）">
+                <i class="fa fa-chevron-left"></i> 感知器原理与实战（Perceptron）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
           
           </div>
@@ -344,6 +498,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/04/10/Knn/"
+           data-title="K近邻算法原理与实战（KNN）" data-url="http://muyeby.github.io/2017/04/10/Knn/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -363,8 +525,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -426,6 +597,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模型原理"><span class="nav-number">1.</span> <span class="nav-text">模型原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#距离度量"><span class="nav-number">1.1.</span> <span class="nav-text">距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k值的选择"><span class="nav-number">1.2.</span> <span class="nav-text">k值的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分类决策规则"><span class="nav-number">1.3.</span> <span class="nav-text">分类决策规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型实现"><span class="nav-number">2.</span> <span class="nav-text">模型实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造平衡KD树"><span class="nav-number">2.1.</span> <span class="nav-text">构造平衡KD树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索KD树"><span class="nav-number">2.2.</span> <span class="nav-text">搜索KD树</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -531,6 +718,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
