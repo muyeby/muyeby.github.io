@@ -120,7 +120,7 @@
 <meta property="og:image" content="http://wx1.sinaimg.cn/large/006Fmjmcly1fiescvij5gj309d05c74w.jpg">
 <meta property="og:image" content="http://wx2.sinaimg.cn/large/006Fmjmcly1fiesd0mfzpj30jk07ugnd.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/large/006Fmjmcly1fiesdqe0dtj30js0j0dno.jpg">
-<meta property="og:updated_time" content="2018-03-01T13:29:36.000Z">
+<meta property="og:updated_time" content="2018-03-01T13:34:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分词相关研究">
 <meta name="twitter:description" content="简单分词模型之HMM&amp;amp;&amp;amp;CRF本文主要介绍两个常见而又简单的分词模型: HMM(隐马尔科夫模型)和CRF(条件随机场模型)．之前我们介绍的是基于词的n元LM的分词方法,而本文介绍的是由字构词思想的汉语分词模型.">
@@ -425,9 +425,15 @@
         <h1 id="简单分词模型之HMM-amp-amp-CRF"><a href="#简单分词模型之HMM-amp-amp-CRF" class="headerlink" title="简单分词模型之HMM&amp;&amp;CRF"></a>简单分词模型之HMM&amp;&amp;CRF</h1><p>本文主要介绍两个常见而又简单的分词模型: HMM(隐马尔科夫模型)和CRF(条件随机场模型)．之前我们介绍的是基于词的n元LM的分词方法,而本文介绍的是由字构词思想的汉语分词模型.<br><a id="more"></a></p>
 <blockquote>
 <p>由字构词的分词方法认为每个字在构成一个特定的词语时都占据着一个确定的<strong>构词位置（词位）</strong>, 假如规定每个字只有４个词位，词首（B）,词中（M），词尾（E）,单独成词（S）,于是例子<br>“你/现在/应该/去/幼儿园/了”　可以表达为：<br> 你S现B在E应B该E去S幼B儿M园E了S<br> 这样, 只要对一句话的每个字进行分类后, 就能得到分词结果了。</p>
-<h2 id="1-基本定义"><a href="#1-基本定义" class="headerlink" title="1.基本定义:"></a>1.基本定义:</h2><h4 id="1-1-图"><a href="#1-1-图" class="headerlink" title="1.1  图:"></a>1.1  图:</h4><p>图是由结点和连接结点的边组成的集合。结点和边分别记作v和e，结点和边的集合分别记作V和E，图记作G=（V，E）。无向图是指边没有方向的图。</p>
-<h4 id="1-2-概率图模型（PGM）"><a href="#1-2-概率图模型（PGM）" class="headerlink" title="1.2  概率图模型（PGM）"></a>1.2  概率图模型（PGM）</h4><p>概率图模型是一类<strong>用图的形式表示随机变量之间条件依赖关系的概率模型</strong>，是概率论与图论的结合。根据图中边有无方向，常用的概率图模型分为两类：有向图（贝叶斯网络、信念网络）、无向图（马尔可夫随机场、马尔可夫网络）。</p>
-<h6 id="1-有向概率图介绍"><a href="#1-有向概率图介绍" class="headerlink" title="(1) 有向概率图介绍"></a>(1) 有向概率图介绍</h6><p>有向图的联合概率: $P(X_1,X_2…X<em>N) = \prod\limits</em>{i=1}^N P(X_i|\pi(X_i))$<br>其中，$\pi(X_i)$是$X_i$的父节点。<br><img src="http://wx2.sinaimg.cn/mw690/005xvrQfly1fkfvlik173j30az05g74y.jpg" alt="enter image description here"><br>在上图中, 联合概率可以表示为<br>$P(X_1,X_2…X_5) = P(X_1)P(X_2|X_1)P(X_3|X_2)P(X_4|X_2)P(X_5|X_3X_4)$</p>
+</blockquote>
+<h2 id="1-基本定义"><a href="#1-基本定义" class="headerlink" title="1.基本定义:"></a>1.基本定义:</h2><h4 id="1-1-图"><a href="#1-1-图" class="headerlink" title="1.1  图:"></a>1.1  图:</h4><blockquote>
+<p>图是由结点和连接结点的边组成的集合。结点和边分别记作v和e，结点和边的集合分别记作V和E，图记作G=（V，E）。无向图是指边没有方向的图。</p>
+</blockquote>
+<h4 id="1-2-概率图模型（PGM）"><a href="#1-2-概率图模型（PGM）" class="headerlink" title="1.2  概率图模型（PGM）"></a>1.2  概率图模型（PGM）</h4><blockquote>
+<p>概率图模型是一类<strong>用图的形式表示随机变量之间条件依赖关系的概率模型</strong>，是概率论与图论的结合。根据图中边有无方向，常用的概率图模型分为两类：有向图（贝叶斯网络、信念网络）、无向图（马尔可夫随机场、马尔可夫网络）。</p>
+</blockquote>
+<h6 id="1-有向概率图介绍"><a href="#1-有向概率图介绍" class="headerlink" title="(1) 有向概率图介绍"></a>(1) 有向概率图介绍</h6><blockquote>
+<p>有向图的联合概率: $P(X_1,X_2…X<em>N) = \prod\limits</em>{i=1}^N P(X_i|\pi(X_i))$<br>其中，$\pi(X_i)$是$X_i$的父节点。<br><img src="http://wx2.sinaimg.cn/mw690/005xvrQfly1fkfvlik173j30az05g74y.jpg" alt="enter image description here"><br>在上图中, 联合概率可以表示为<br>$P(X_1,X_2…X_5) = P(X_1)P(X_2|X_1)P(X_3|X_2)P(X_4|X_2)P(X_5|X_3X_4)$</p>
 <h6 id="2-无向概率图介绍"><a href="#2-无向概率图介绍" class="headerlink" title="(2) 无向概率图介绍"></a>(2) 无向概率图介绍</h6><p><strong>定义(概率无向图模型）</strong>设有联合概率分布$P(Y)$, 由无向图G=(V,E)表示，在图G中，结点$v$表示随机变量，边$e$表示随机变量之间的依赖关系。如果联合概率分布$P(Y)$满足<em>成对、局部或全局马尔可夫性</em>，就称此联合概率分布为<em>概率无向图模型(probability undirected graphical model)，或马尔可夫随机场(Markov random field)。</em></p>
 <h6 id="2-1-概率无向图模型的因子分解"><a href="#2-1-概率无向图模型的因子分解" class="headerlink" title="(2).1 概率无向图模型的因子分解"></a>(2).1 概率无向图模型的因子分解</h6><p>我们首先给出无向图中的团与最大团的定义。<br><strong>定义(团与最大团）</strong>无向图G中任何两个结点均有边连接的结点子集称为<em>团（clique)</em>。若C是无向图G的一个团，并且不能再加进任何一个G的结点使其成为一个更大的团，则称此C为<em>最大团（maximal clique)</em>。</p>
 </blockquote>
@@ -467,12 +473,12 @@
 </blockquote>
 <p><strong>齐次马尔科夫假设(一阶马尔科夫假设):</strong>  假设隐藏的马尔科夫链在任意时刻t的状态只依赖于前一时刻的状态,与其他时刻的状态与观测无关,与时刻t无关<br>$P(y<em>t|y</em>{t-1},x_{t-1},…y_1,x_1) =  P(y<em>t|y</em>{t-1})$</p>
 <p><strong>观测独立性假设:</strong>  任意时刻的观测只依赖于该时刻的马尔科夫链的状态,与其他观测及状态无关<br>$P(x_t|y_T,x<em>T,y</em>{T-1},x<em>{T-1},…y</em>{t+1},x_{t+1},y<em>t,y</em>{t-1},x_{t-1}…y_1,x_1)=P(x_t|y_t)$</p>
+</blockquote>
 <h3 id="2-2-HMM三个问题"><a href="#2-2-HMM三个问题" class="headerlink" title="2.2 HMM三个问题"></a>2.2 HMM三个问题</h3><ul>
 <li>概率计算问题 :<br>$已知\lambda = (A,B,\pi)和观测序列X=(x_1,x_2…x_t),求P(X|\lambda)$</li>
 <li>学习问题:<br>$已知观测序列,估计模型\lambda = (A,B,\pi), 使得在该模型下观测到X的概率P(X|\lambda)最大$</li>
 <li>预测问题(解码问题):<br>$已知\lambda = (A,B,\pi)和观测序列X=(x_1,x_2…x_t),$求给定观测序列后,使条件概率$P(Y|X)$最大的状态序列$Y=(y_1,y_2…y_t)$</li>
 </ul>
-</blockquote>
 <p>我们这里主要关注解码问题.</p>
 <h3 id="2-3-HMM分词"><a href="#2-3-HMM分词" class="headerlink" title="2.3 HMM分词"></a>2.3 HMM分词</h3><h4 id="Learning-Stage—-easy-here"><a href="#Learning-Stage—-easy-here" class="headerlink" title="Learning Stage—-easy here"></a>Learning Stage—-easy here</h4><p>HMM在中文分词任务上的参数可以通过<strong>监督</strong>(统计频率+平滑)的方法直接估计,得到$\lambda = (A,B,\pi)$ </p>
 <blockquote>
@@ -524,7 +530,10 @@
 <p>条件随机场完全由<strong>特征函数和对应的权值$\lambda_k、\mu_l$</strong>确定。</p>
 <p>举个特征函数的栗子:</p>
 <blockquote>
-<p><img src="http://upload-images.jianshu.io/upload_images/1371984-b83a14ead15dd24f.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Blockquote"><br>当$l_{i-1}$是B，$l_i$是E时，$f_1$ = 1，其他情况$f_1$ = 0。$w_1$也应当是正的，并且$w_1$越大，说明我们越认为B后面应当跟一个E。<br><img src="http://upload-images.jianshu.io/upload_images/1371984-7ea437efbff95f58.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="enter image description here"><br>可以设置为如果$l<em>i和l</em>{i-1}$都是E，那么$f_2$等于1，其他情况$f_2$ = 0。这里，我们应当可以想到$w_2$是负的，并且$w_2$的绝对值越大，表示我们越不认可E后面还是E的标注序列。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1371984-b83a14ead15dd24f.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Blockquote"></p>
+<p>当$l_{i-1}$是B，$l_i$是E时，$f_1$ = 1，其他情况$f_1$ = 0。$w_1$也应当是正的，并且$w_1$越大，说明我们越认为B后面应当跟一个E。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1371984-7ea437efbff95f58.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="enter image description here"></p>
+<p>可以设置为如果$l<em>i和l</em>{i-1}$都是E，那么$f_2$等于1，其他情况$f_2$ = 0。这里，我们应当可以想到$w_2$是负的，并且$w_2$的绝对值越大，表示我们越不认可E后面还是E的标注序列。</p>
 <p>这里只给出了转移特征函数的例子, 对于状态特征也是同理</p>
 </blockquote>
 <p>线性链条件随机场也是对数线性模型（loglinear model)。</p>
@@ -553,8 +562,10 @@
 <p>我们从两个角度来分析这个问题:</p>
 <p>1 . <strong>数学角度</strong></p>
 <blockquote>
-<p> 我们对上面的式子取对数, 可以得到<br>$log P(Y, X) = log P(X_1) +  \sum _i log P(Y<em>i|Y</em>{i-1}) + \sum _i log P(X_i|Y<em>i) $<br>我们把这个式子与CRF的式子进行比较：<br>$log P(Y|X) = \sum\limits</em>{i,k}^n \lambda_k \centerdot t<em>k(y</em>{i-1},y<em>i,i,x) +  \sum\limits</em>{i,l}^n \mu_l \centerdot s_l(y_i,i,x)$<br>可以发现，如果我们把第一个HMM式子中的log形式的概率看做是第二个CRF式子中的特征函数的权重$\lambda, \mu$的话，我们会发现，CRF和HMM具有相同的形式, 可以这样构造CRF的特征函数<br>对于HMM中的每一个转移概率$p(Y_i=y<em>i|Y</em>{i-1}=y_{i-1})$,我们可以定义这样的一个特征函数：<br>$t_k(X, Y_i,Y_i-1, i) = 1$<br>该特征函数仅当$Y_i=y<em>i, Y</em>{i-1}=y_{i-1}$时才等于1。这个特征函数的权重如下：<br>$\lambda_k = log(Y_i=y<em>i|Y</em>{i-1}=y_{i-1})$<br>同理, 对于HMM中的发射概率，我们也都可以定义相应的特征函数$s_l$，并让该特征函数的权重$\mu$等于HMM中的log形式的发射概率。<br>可以发现, 用这些形式的特征函数和相应的权重计算出来的$p(Y|X)$和对数形式的HMM模型几乎是一样的！<br>所以:<br><strong>每一个HMM模型都等价于某个CRF </strong><br><strong>每一个HMM模型都等价于某个CRF</strong><br><strong>每一个HMM模型都等价于某个CRF </strong></p>
+<p> 我们对上面的式子取对数, 可以得到<br>$log P(Y, X) = log P(X_1) +  \sum _i log P(Y<em>i|Y</em>{i-1}) + \sum _i log P(X_i|Y_i) $</p>
 </blockquote>
+<p>我们把这个式子与CRF的式子进行比较：<br>$log P(Y|X) = \sum\limits_{i,k}^n \lambda_k \centerdot t<em>k(y</em>{i-1},y<em>i,i,x) +  \sum\limits</em>{i,l}^n \mu_l \centerdot s_l(y_i,i,x)$<br>可以发现，如果我们把第一个HMM式子中的log形式的概率看做是第二个CRF式子中的特征函数的权重$\lambda, \mu$的话，我们会发现，CRF和HMM具有相同的形式, 可以这样构造CRF的特征函数<br>对于HMM中的每一个转移概率$p(Y_i=y<em>i|Y</em>{i-1}=y_{i-1})$,我们可以定义这样的一个特征函数：<br>$t_k(X, Y_i,Y_i-1, i) = 1$<br>该特征函数仅当$Y_i=y<em>i, Y</em>{i-1}=y_{i-1}$时才等于1。这个特征函数的权重如下：<br>$\lambda_k = log(Y_i=y<em>i|Y</em>{i-1}=y_{i-1})$<br>同理, 对于HMM中的发射概率，我们也都可以定义相应的特征函数$s_l$，并让该特征函数的权重$\mu$等于HMM中的log形式的发射概率。<br>可以发现, 用这些形式的特征函数和相应的权重计算出来的$p(Y|X)$和对数形式的HMM模型几乎是一样的！<br>所以: </p>
+<p><strong>每一个HMM模型都等价于某个CRF </strong><br><strong>每一个HMM模型都等价于某个CRF</strong><br><strong>每一个HMM模型都等价于某个CRF </strong></p>
 <p>2 . <strong>图模型角度</strong><br><img src="http://wx1.sinaimg.cn/mw690/005xvrQfly1fkeg4b7kpgj30b604r74b.jpg" alt="enter image description here"></p>
 <p><img src="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mdxovd5ij20kk07wmxh.jpg" alt="enter image description here"><br>    　　　　　　　　　　　　线性链条件随机场<br><img src="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mdykecbpj20jm07gt8x.jpg" width="４56" height="236"><br>      　　　　　　X和Y有相同的图结构的线性链条件随机场</p>
 <blockquote>
@@ -567,16 +578,18 @@
 <p>具体原因解释参见：<br> &lt;&lt;统计自然语言处理&gt;&gt; chap 7.2</p>
 <h2 id="5-当下深度学习中文分词技术"><a href="#5-当下深度学习中文分词技术" class="headerlink" title="5. 当下深度学习中文分词技术"></a>5. 当下深度学习中文分词技术</h2><ul>
 <li>Pei 2014的模型与Zheng 2013 — Window Based NN分类器<blockquote>
-<p><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescxvg78j309x09x40c.jpg" alt="enter image description here"><br>结果：<br><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescydkqvj30al07zabf.jpg" alt="enter image description here"></p>
+<p><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescxvg78j309x09x40c.jpg" alt="enter image description here"></p>
 </blockquote>
 </li>
 </ul>
+<p>结果：<br><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescydkqvj30al07zabf.jpg" alt="enter image description here"></p>
 <p>通过加入bigram特征终于做到了和传统特征工程comparable<br>2013年之前的都是非NN传统方法。截止2014年，NN方法没有取得显著成绩。</p>
 <ul>
 <li><p>sequence模型</p>
 <blockquote>
-<p>Chen等人2015年：　GRU/LSTM　＋ bigram<br><img src="http://wx1.sinaimg.cn/large/006Fmjmcly1fiescvij5gj309d05c74w.jpg" alt="enter image description here"></p>
+<p>Chen等人2015年：　GRU/LSTM　＋ bigram</p>
 </blockquote>
+<p><img src="http://wx1.sinaimg.cn/large/006Fmjmcly1fiescvij5gj309d05c74w.jpg" alt="enter image description here"></p>
 </li>
 <li><p>Word-based Methods<br>Cai 2016: 跳出了序列标注的框框，直接对分词结果建模。<br><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiesd0mfzpj30jk07ugnd.jpg" alt="enter image description here"><br>重新跑了Chen的实验, 并去掉了Chen的习语词典.</p>
 </li>
