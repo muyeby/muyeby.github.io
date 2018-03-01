@@ -1,0 +1,1024 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="机器学习," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Convolutional Neural Networks
+白雪峰 — xfbai@mtlab.hit.edu.cn.这是一篇关于CNN的总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Convolutional Neural Networks2">
+<meta property="og:url" content="http://muyeby.github.io/2017/10/24/cnn/index.html">
+<meta property="og:site_name" content="Muyeby's Blog">
+<meta property="og:description" content="Convolutional Neural Networks
+白雪峰 — xfbai@mtlab.hit.edu.cn.这是一篇关于CNN的总结">
+<meta property="og:image" content="https://lh3.googleusercontent.com/IoYo64NskyHdxzltw-xEk5abHX1_Lmk8uTziFrd4S8C6fZdzdoMDd_x1FOXQiV9CQ4VzuC_xZNQ=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/i5NTRpYY7AGaDoLpnkKEtvVdCKYkEYswIBdlthKLjAyjp2uZtQ1f_pIqFXqI5dtxUAG4hT3Qq2E=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/kHgn5WtCxzUHBbh9GR-EoW0WB1NS5mbRzAGT4LpbwqrvACwDERgXIRaecJ4E4a9JiLavTA8GLKs=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/tbQsGAO_VeDVH4mtHlrY4F43alqwR2KrMbNfFuXOVEqmebEo_qmrwvPhNVZ4XCJOebz5Bv6Ujvk=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/OVoi8qCglOwEJ0OaJPT8cXZW10fj37-eGCSZLf81m33NF16pFg3kYsbz0rvAzvLYYer-9yD7Rks=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/iCsuVDfVvDIRU5qvsUVfs14EV6ZL2y9joMy379_0HjfbWJEu1ieB0nwdv4vaysWSdiwZojlxUQc=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/Cz0OC3027jUDRbR3M_MxUVEBgdP1hHXNkLZxQDrvfK6G55if9KB_of_Puqj5OCYm6zGmVgXJcnY=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/bOXd_J8N3dttwdyGUZpeoNkCX5GXHJdNe0QXdQfvGdad46Ue51n0LwE_vqtZLM1bqLtuvrV3aCs=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/d-JO3HlQ84n3J3ezH3yk7CxxdMkrZwwbMQaSWPFH2G0WyLxHbDXk5x4T7g6Zc1IhbA8w_jsI5CI=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/DSd7g_WeKsPbijUx3lQ4GUsvne5AmBrCV_bodA55Rvy2T4cY3S8pi2oSvNehjx7xIHy03aSsq9g=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-5Yz8fp7qtAlITJQ0tvqi_Are9FaWZRI9JqkywY-0Uqh_zI9NAgM01UxRK1F9XN5EDuuu422ees=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/z9QvwT3qvYWooGsSquyQkVZ_-UzQg7vyMfcru1JE0V8wPkauMLglRMEVW_HbLiLDrO4zJlEF1QA=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/qiKdcJQ2RW9ReMczWCjPoVe8xHZMOdBUes_9oJ9e5syUvVmLVdyZ5z_2dPEf4vMBufdmwTN2wlY=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/Xi65Dgab6okAbsBrEWptHgdDdVD8YVw4h8J8Xryvh7UTccLti6dbtPzBFVhuSSpSrfScI6EQ9EA=s0">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-6QNd1M91W90/WivaZhBVFoI/AAAAAAAAAD0/oiIGDrhrzDcnxDsNYSdDeyTPd10lRxzzACLcBGAs/s0/l.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-lE-sEVVpfMM/WivcIGABLII/AAAAAAAAAEM/eDZ0M_s83O0wYgA0tCLqUq2DeZtDNI7dACLcBGAs/s0/m.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-rYDsoOFK74o/WivdNg46dsI/AAAAAAAAAEc/-jrkYV_J6Og3Enz3sz89-eiWSaOVfQrEQCLcBGAs/s0/n.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-QW2ntGUCi8Q/WivdgjYoy5I/AAAAAAAAAEk/Y8Wnp92JzDgKsJPbsX9UinR8s8qCaiboQCLcBGAs/s0/o.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-k5Z2j5gi4Ps/WivdryPzHgI/AAAAAAAAAEs/kmQJiYec-PQuWxOHr7RAU3hL9WrGPmDmACLcBGAs/s0/p.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-OuDdpGbIEDc/WivfRPXR6yI/AAAAAAAAAFQ/LZH707Lw7RksqdOIR49EsLBLj9QwSh_DACLcBGAs/s0/q.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-7WUYZyLYfXs/WivjAytq6DI/AAAAAAAAAG8/affWGlCh_HEl687Vv7Pv9ltPdAoismfFgCLcBGAs/s0/v.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-9FLQCqfyOWw/WivgK7WwTyI/AAAAAAAAAFk/KG60O6Gpkug_Kf4xfTKj0WKrvssdnq-ygCLcBGAs/s0/r.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-3fabpqD56a8/WivgYAKQ6OI/AAAAAAAAAFs/VeU-hNdETlEE9k5kBdwmem6Amwpzgx6yACLcBGAs/s0/s.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-ZijUIGdmZpU/WivgtVbBp0I/AAAAAAAAAGI/ujDZAv_WFTMGRnZq0d3RfDS-heND6LR9ACLcBGAs/s0/t.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-XI7wZtxeE4w/Wivg9clXzmI/AAAAAAAAAGQ/eREvQ78goWcyW808lc4PTEYCC9-vVN82ACLcBGAs/s0/u.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-0qaKzwQMhG4/Wivkh2ngmbI/AAAAAAAAAHU/7JshtCSdplELaS6jhMLUlSwIqxJjcpRYACLcBGAs/s0/w.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-T73eltpbGdw/WivkluABl6I/AAAAAAAAAHc/3YDAQHlk730xZ5Wf5BhxoT_1EIs3eDZfgCLcBGAs/s0/x.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-NsqxmGLDxRo/WivqzH18xTI/AAAAAAAAAIQ/i1NSOeWdOCky9UcVj9IMMBo7mXvV2zsowCLcBGAs/s0/y.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-bA24w3VUuZc/WivrI0rqKLI/AAAAAAAAAIY/59Xd9-yWMUEHINaf3SblbAsesjzwRd5qgCLcBGAs/s0/z.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-NlH7_HP0w_U/Wi0L5wRdbVI/AAAAAAAAAJI/Q3WMTiiNpD4yT_62FfYtytCs6znDBdthwCLcBGAs/s0/zz.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-b0O13ZAJhyk/Wi0PM31K32I/AAAAAAAAAJY/SIZS0X5h2I81J53JDyLIyIrNa9skZhUUACLcBGAs/s0/z1.png">
+<meta property="og:updated_time" content="2018-03-01T13:21:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Convolutional Neural Networks2">
+<meta name="twitter:description" content="Convolutional Neural Networks
+白雪峰 — xfbai@mtlab.hit.edu.cn.这是一篇关于CNN的总结">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/IoYo64NskyHdxzltw-xEk5abHX1_Lmk8uTziFrd4S8C6fZdzdoMDd_x1FOXQiV9CQ4VzuC_xZNQ=s0">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'muyeby'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://muyeby.github.io/2017/10/24/cnn/"/>
+
+
+
+
+
+  <title> Convolutional Neural Networks2 | Muyeby's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ac6471239e19ce9ace2a017c1b1cd1f2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Muyeby's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I'm a slow walker,but I never walk back</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://muyeby.github.io/2017/10/24/cnn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="muyeby">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Muyeby's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Convolutional Neural Networks2
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T08:30:20+08:00">
+                2017-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/24/cnn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/24/cnn/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/10/24/cnn/" class="leancloud_visitors" data-flag-title="Convolutional Neural Networks2">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Convolutional-Neural-Networks"><a href="#Convolutional-Neural-Networks" class="headerlink" title="Convolutional Neural Networks"></a>Convolutional Neural Networks</h2><blockquote>
+<p>白雪峰 — xfbai@mtlab.hit.edu.cn.<br>这是一篇关于CNN的总结</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><ul>
+<li>CNN栗子镇楼</li>
+<li>What is CNN<ul>
+<li>什么是卷积</li>
+<li>什么是池化</li>
+</ul>
+</li>
+<li>Why CNN </li>
+<li>对CNN的其他一些理解</li>
+<li>CNN实现（接口）</li>
+</ul>
+<h2 id="1-CNN栗子（A-Beginning-Glimpse-of-CNN）"><a href="#1-CNN栗子（A-Beginning-Glimpse-of-CNN）" class="headerlink" title="1. CNN栗子（A Beginning Glimpse of CNN）"></a>1. CNN栗子（A Beginning Glimpse of CNN）</h2><p>(1)Modern CNN since Yann LeCun<br><img src="https://lh3.googleusercontent.com/IoYo64NskyHdxzltw-xEk5abHX1_Lmk8uTziFrd4S8C6fZdzdoMDd_x1FOXQiV9CQ4VzuC_xZNQ=s0" alt="enter image description here" title="lecun.png"><br>(2)<br><img src="https://lh3.googleusercontent.com/i5NTRpYY7AGaDoLpnkKEtvVdCKYkEYswIBdlthKLjAyjp2uZtQ1f_pIqFXqI5dtxUAG4hT3Qq2E=s0" alt="DeepID" title="DeepId.png"></p>
+<h2 id="2-What-is-CNN"><a href="#2-What-is-CNN" class="headerlink" title="2. What is CNN?"></a>2. What is CNN?</h2><p>神经网络？卷积？</p>
+<h3 id="2-1-什么是卷积？"><a href="#2-1-什么是卷积？" class="headerlink" title="2.1 什么是卷积？"></a>2.1 什么是卷积？</h3><h4 id="卷积的定义"><a href="#卷积的定义" class="headerlink" title="卷积的定义:"></a>卷积的定义:</h4><p>其连续的定义为：<br>$(f<em>g)(n) = \int_{ - \infty }^{ + \infty } {f(t)g(n-t)dt}$<br>其离散的定义为：<br> $(f</em>g)(n) = \sum_{t = - \infty} ^{ + \infty } {f(t)g(n-t)}$</p>
+<p>特点：　<br><img src="https://lh3.googleusercontent.com/kHgn5WtCxzUHBbh9GR-EoW0WB1NS5mbRzAGT4LpbwqrvACwDERgXIRaecJ4E4a9JiLavTA8GLKs=s0" alt="enter image description here" title="卷积1.jpg"></p>
+<h3 id="2-2-离散卷积的栗子："><a href="#2-2-离散卷积的栗子：" class="headerlink" title="2.2 离散卷积的栗子："></a>2.2 离散卷积的栗子：</h3><p>丢骰子，两个骰子加起来要等于4的概率是多少？</p>
+<blockquote>
+<p>$(f*g)(4) = \sum_{m = 1} ^{ 3 } {f(m)g(4-m)}$</p>
+</blockquote>
+<h4 id="a-二维离散的卷积："><a href="#a-二维离散的卷积：" class="headerlink" title="a. 二维离散的卷积："></a>a. 二维离散的卷积：</h4><p>$(f<em>g)(m,n) = \sum\limits<em>{k=0}^{2}\sum\limits</em>{h=0}^{2}f(h,k)g(m-h,n-k)$<br>则 (f</em>g)(1,1) ?<br><img src="https://lh3.googleusercontent.com/tbQsGAO_VeDVH4mtHlrY4F43alqwR2KrMbNfFuXOVEqmebEo_qmrwvPhNVZ4XCJOebz5Bv6Ujvk=s0" alt="enter image description here" title="111.gif"></p>
+<blockquote>
+<p>离散的卷积可以看成是矩阵的乘法（翻转的）</p>
+<h3 id="2-3-用到二维图像上："><a href="#2-3-用到二维图像上：" class="headerlink" title="2.3 用到二维图像上："></a>2.3 用到二维图像上：</h3><h4 id="a-关于卷积中常用到的一些概念："><a href="#a-关于卷积中常用到的一些概念：" class="headerlink" title="a.关于卷积中常用到的一些概念："></a>a.关于卷积中常用到的一些概念：</h4><p>In <strong>Image Processing</strong><br>– Convolution is always named <strong>filtering</strong>, and there are many famous <strong>filters/convolution kernels</strong> that <strong><em>extract intuitive features in images</em></strong></p>
+</blockquote>
+<p><img src="https://lh3.googleusercontent.com/OVoi8qCglOwEJ0OaJPT8cXZW10fj37-eGCSZLf81m33NF16pFg3kYsbz0rvAzvLYYer-9yD7Rks=s0" alt="enter image description here" title="222.gif"><br>通过在输入数据上不断移动卷积核，来提取不同位置的特征．</p>
+<h4 id="b-图像上作卷积的效果："><a href="#b-图像上作卷积的效果：" class="headerlink" title="b. 图像上作卷积的效果："></a>b. 图像上作卷积的效果：</h4><p><img src="https://lh3.googleusercontent.com/iCsuVDfVvDIRU5qvsUVfs14EV6ZL2y9joMy379_0HjfbWJEu1ieB0nwdv4vaysWSdiwZojlxUQc=s0" alt="enter image description here" title="a.png"><br><img src="https://lh3.googleusercontent.com/Cz0OC3027jUDRbR3M_MxUVEBgdP1hHXNkLZxQDrvfK6G55if9KB_of_Puqj5OCYm6zGmVgXJcnY=s0" alt="enter image description here" title="b.png"></p>
+<h3 id="2-4-用到神经网络中"><a href="#2-4-用到神经网络中" class="headerlink" title="2.4 用到神经网络中"></a>2.4 用到神经网络中</h3><p><img src="https://lh3.googleusercontent.com/bOXd_J8N3dttwdyGUZpeoNkCX5GXHJdNe0QXdQfvGdad46Ue51n0LwE_vqtZLM1bqLtuvrV3aCs=s0" alt="enter image description here" title="c.png"></p>
+<h3 id="2-5-卷积的细节"><a href="#2-5-卷积的细节" class="headerlink" title="2.5 卷积的细节"></a>2.5 卷积的细节</h3><h4 id="a-filter-Kernel-size-number"><a href="#a-filter-Kernel-size-number" class="headerlink" title="a. filter/Kernel size, number"></a>a. <strong>filter/Kernel size, number</strong></h4><p>假设神经网络的输入是６＊６的image,<br><img src="https://lh3.googleusercontent.com/d-JO3HlQ84n3J3ezH3yk7CxxdMkrZwwbMQaSWPFH2G0WyLxHbDXk5x4T7g6Zc1IhbA8w_jsI5CI=s0" alt="enter image description here" title="e.png"><br>那么，，，</p>
+<p>再来个更形象的：<br><img src="https://lh3.googleusercontent.com/DSd7g_WeKsPbijUx3lQ4GUsvne5AmBrCV_bodA55Rvy2T4cY3S8pi2oSvNehjx7xIHy03aSsq9g=s0" alt="enter image description here" title="f.png"></p>
+<h4 id="b-Stride"><a href="#b-Stride" class="headerlink" title="b. Stride"></a><strong>b. Stride</strong></h4><blockquote>
+<p>The step size you take the filter to sweep the<br>image</p>
+</blockquote>
+<p><img src="https://lh3.googleusercontent.com/-5Yz8fp7qtAlITJQ0tvqi_Are9FaWZRI9JqkywY-0Uqh_zI9NAgM01UxRK1F9XN5EDuuu422ees=s0" alt="enter image description here" title="g.png"></p>
+<h4 id="c-Zero-padding"><a href="#c-Zero-padding" class="headerlink" title="c. Zero-padding"></a><strong>c. Zero-padding</strong></h4><blockquote>
+<ol>
+<li>A way not to ignore pattern on border</li>
+<li>New image is smaller than the original image</li>
+</ol>
+</blockquote>
+<p><img src="https://lh3.googleusercontent.com/z9QvwT3qvYWooGsSquyQkVZ_-UzQg7vyMfcru1JE0V8wPkauMLglRMEVW_HbLiLDrO4zJlEF1QA=s0" alt="enter image description here" title="i.png"></p>
+<h4 id="d-Channel"><a href="#d-Channel" class="headerlink" title="d.Channel"></a><strong>d.Channel</strong></h4><p><img src="https://lh3.googleusercontent.com/qiKdcJQ2RW9ReMczWCjPoVe8xHZMOdBUes_9oJ9e5syUvVmLVdyZ5z_2dPEf4vMBufdmwTN2wlY=s0" alt="enter image description here" title="j.png"></p>
+<h3 id="2-6-池化-Pooling"><a href="#2-6-池化-Pooling" class="headerlink" title="2.6 池化(Pooling)"></a>2.6 池化(Pooling)</h3><blockquote>
+<p>Pooling layers <strong>subsample</strong> their input</p>
+<pre><code>1. Spatial pooling (also called subsampling or
+</code></pre><p>downsampling) <strong><em>reduces the dimensionality</em></strong> of<br>each feature map</p>
+<pre><code>2. Retains the ***most important information***
+</code></pre></blockquote>
+<h4 id="1-Max-pooling例子："><a href="#1-Max-pooling例子：" class="headerlink" title="1. Max pooling例子："></a>1. Max pooling例子：</h4><p><img src="https://lh3.googleusercontent.com/Xi65Dgab6okAbsBrEWptHgdDdVD8YVw4h8J8Xryvh7UTccLti6dbtPzBFVhuSSpSrfScI6EQ9EA=s0" alt="enter image description here" title="k.png"></p>
+<blockquote>
+<p>Pooling is <strong>unsensitive to local translation.</strong>(局部不变性)<br>– “if we translate the input by a small amount,<br>the values of most of the pooled outputs do<br>not change.”<br><img src="https://lh3.googleusercontent.com/-6QNd1M91W90/WivaZhBVFoI/AAAAAAAAAD0/oiIGDrhrzDcnxDsNYSdDeyTPd10lRxzzACLcBGAs/s0/l.png" alt="enter image description here" title="l.png"></p>
+</blockquote>
+<h4 id="2-Pooling的变种"><a href="#2-Pooling的变种" class="headerlink" title="2. Pooling的变种"></a>2. Pooling的变种</h4><p>Pooling should be designed to fit specific<br>applications.</p>
+<ul>
+<li>Max pooling</li>
+<li>Average pooling</li>
+<li>Min pooling</li>
+<li>l 2 -norm pooling</li>
+<li>Dynamic k-pooling</li>
+<li>Etc.</li>
+</ul>
+<h4 id="3-Pooling的性质"><a href="#3-Pooling的性质" class="headerlink" title="3. Pooling的性质"></a>3. Pooling的性质</h4><ul>
+<li>Makes the input representation (feature dim) smaller and more manageable</li>
+<li>Reduces number of parameters and computations in the network, therefore, controlling overfitting</li>
+<li>Makes the network invariant to small transformations, distortions and translations in the input image</li>
+<li>Help us arrive at almost scale invariant representation of our image</li>
+</ul>
+<h3 id="2-7-Flatten"><a href="#2-7-Flatten" class="headerlink" title="2.7 Flatten"></a>2.7 Flatten</h3><p><img src="https://lh3.googleusercontent.com/-lE-sEVVpfMM/WivcIGABLII/AAAAAAAAAEM/eDZ0M_s83O0wYgA0tCLqUq2DeZtDNI7dACLcBGAs/s0/m.png" alt="enter image description here" title="m.png"></p>
+<h3 id="2-8-Convolution-v-s-Fully-Connected"><a href="#2-8-Convolution-v-s-Fully-Connected" class="headerlink" title="2.8 Convolution v.s. Fully Connected"></a>2.8 Convolution v.s. Fully Connected</h3><p><img src="https://lh3.googleusercontent.com/-rYDsoOFK74o/WivdNg46dsI/AAAAAAAAAEc/-jrkYV_J6Og3Enz3sz89-eiWSaOVfQrEQCLcBGAs/s0/n.png" alt="enter image description here" title="n.png"></p>
+<p><img src="https://lh3.googleusercontent.com/-QW2ntGUCi8Q/WivdgjYoy5I/AAAAAAAAAEk/Y8Wnp92JzDgKsJPbsX9UinR8s8qCaiboQCLcBGAs/s0/o.png" alt="enter image description here" title="o.png"></p>
+<p><img src="https://lh3.googleusercontent.com/-k5Z2j5gi4Ps/WivdryPzHgI/AAAAAAAAAEs/kmQJiYec-PQuWxOHr7RAU3hL9WrGPmDmACLcBGAs/s0/p.png" alt="enter image description here" title="p.png"></p>
+<h3 id="2-9-The-whole-CNN"><a href="#2-9-The-whole-CNN" class="headerlink" title="2.9 The whole CNN"></a>2.9 The whole CNN</h3><p><img src="https://lh3.googleusercontent.com/-OuDdpGbIEDc/WivfRPXR6yI/AAAAAAAAAFQ/LZH707Lw7RksqdOIR49EsLBLj9QwSh_DACLcBGAs/s0/q.png" alt="enter image description here" title="q.png"></p>
+<p><img src="https://lh3.googleusercontent.com/-7WUYZyLYfXs/WivjAytq6DI/AAAAAAAAAG8/affWGlCh_HEl687Vv7Pv9ltPdAoismfFgCLcBGAs/s0/v.png" alt="enter image description here" title="v.png"></p>
+<p>##3. Why CNN</p>
+<ul>
+<li><p>Some patterns are much smaller than the whole image.<br><img src="https://lh3.googleusercontent.com/-9FLQCqfyOWw/WivgK7WwTyI/AAAAAAAAAFk/KG60O6Gpkug_Kf4xfTKj0WKrvssdnq-ygCLcBGAs/s0/r.png" alt="enter image description here" title="r.png"></p>
+</li>
+<li><p>The same patterns appear in different regions.<br><img src="https://lh3.googleusercontent.com/-3fabpqD56a8/WivgYAKQ6OI/AAAAAAAAAFs/VeU-hNdETlEE9k5kBdwmem6Amwpzgx6yACLcBGAs/s0/s.png" alt="enter image description here" title="s.png"></p>
+</li>
+<li><p>Subsampling the pixels will not change the object<br><img src="https://lh3.googleusercontent.com/-ZijUIGdmZpU/WivgtVbBp0I/AAAAAAAAAGI/ujDZAv_WFTMGRnZq0d3RfDS-heND6LR9ACLcBGAs/s0/t.png" alt="enter image description here" title="t.png"></p>
+</li>
+</ul>
+<h2 id="Soga"><a href="#Soga" class="headerlink" title="Soga~"></a>Soga~</h2><p><img src="https://lh3.googleusercontent.com/-XI7wZtxeE4w/Wivg9clXzmI/AAAAAAAAAGQ/eREvQ78goWcyW808lc4PTEYCC9-vVN82ACLcBGAs/s0/u.png" alt="enter image description here" title="u.png"></p>
+<h2 id="4-对CNN的其他一些理解"><a href="#4-对CNN的其他一些理解" class="headerlink" title="4. 对CNN的其他一些理解"></a>4. 对CNN的其他一些理解</h2><h3 id="4-1-关于接受域（receptive-field）"><a href="#4-1-关于接受域（receptive-field）" class="headerlink" title="4.1 关于接受域（receptive field）"></a>4.1 关于接受域（receptive field）</h3><p>称在底层中影响上层输出单元 $s$ 的单元集合为 $s$ 的接受域(receptive field).<br><img src="https://lh3.googleusercontent.com/-0qaKzwQMhG4/Wivkh2ngmbI/AAAAAAAAAHU/7JshtCSdplELaS6jhMLUlSwIqxJjcpRYACLcBGAs/s0/w.png" alt="enter image description here" title="w.png"></p>
+<blockquote>
+<p>处于卷积网络更深的层中的单元,它们的接受域要比处在浅层的单元的接受域更大。如果网络还包含类似步幅卷积或者池化之类的结构特征, 这种效应会加强。这意味着在卷积网络中尽管直接连接都是很稀疏的,但处在更深的层中的单元可以间接地连接到全部或者大部分输入图像。(表现性能)</p>
+</blockquote>
+<p><img src="https://lh3.googleusercontent.com/-T73eltpbGdw/WivkluABl6I/AAAAAAAAAHc/3YDAQHlk730xZ5Wf5BhxoT_1EIs3eDZfgCLcBGAs/s0/x.png" alt="enter image description here" title="x.png"></p>
+<h3 id="4-2-卷积与池化作为一种无限强的先验"><a href="#4-2-卷积与池化作为一种无限强的先验" class="headerlink" title="4.2 卷积与池化作为一种无限强的先验"></a>4.2 卷积与池化作为一种无限强的先验</h3><p>首先，弱先验具有较高的熵值，因此自由性较强．强先验具有较低的熵值，这样的先验在决定参数最终取值时可以起着非常积极的作用．</p>
+<p>把卷积网络类比成全连接网络，但对于网络的权重具有无限强的先验．a) 所有隐藏单元的权重是共享的．b) 除了一些连续的小单元的权重外，其他的权重都是0．c) 池化也是一个无限强的先验：每个单元都具有对少量平移的不变性．</p>
+<p><strong>卷积和池化可能导致欠拟合！</strong>　任何其他先验类似,卷积和池化只有当先验的假设合理且正确时才有用。如果一项任务依赖于保存精确的空间信息,那么在所有的特征上使用池化将会增大训练误差。</p>
+<p><strong>根据实际需求选取先验</strong></p>
+<h2 id="CNN实现"><a href="#CNN实现" class="headerlink" title="CNN实现"></a>CNN实现</h2><h3 id="1-反向传播"><a href="#1-反向传播" class="headerlink" title="1. 反向传播"></a>1. 反向传播</h3><p>基本与FFNNs相同．</p>
+<h3 id="2-共享权值的梯度问题"><a href="#2-共享权值的梯度问题" class="headerlink" title="2. 共享权值的梯度问题"></a>2. 共享权值的梯度问题</h3><p>一个常见的做法：取梯度的平均值</p>
+<h3 id="3-CNN-in-Keras"><a href="#3-CNN-in-Keras" class="headerlink" title="3. CNN in Keras"></a>3. CNN in Keras</h3><p><img src="https://lh3.googleusercontent.com/-NsqxmGLDxRo/WivqzH18xTI/AAAAAAAAAIQ/i1NSOeWdOCky9UcVj9IMMBo7mXvV2zsowCLcBGAs/s0/y.png" alt="enter image description here" title="y.png"></p>
+<p><img src="https://lh3.googleusercontent.com/-bA24w3VUuZc/WivrI0rqKLI/AAAAAAAAAIY/59Xd9-yWMUEHINaf3SblbAsesjzwRd5qgCLcBGAs/s0/z.png" alt="enter image description here" title="z.png"></p>
+<h3 id="4-CNN-in-Pytorch"><a href="#4-CNN-in-Pytorch" class="headerlink" title="4. CNN in Pytorch"></a>4. CNN in Pytorch</h3><h4 id="a-Pytorch-相关接口"><a href="#a-Pytorch-相关接口" class="headerlink" title="a) Pytorch 相关接口"></a>a) Pytorch 相关接口</h4><p>torch.nn.Conv2d：<br><img src="https://lh3.googleusercontent.com/-NlH7_HP0w_U/Wi0L5wRdbVI/AAAAAAAAAJI/Q3WMTiiNpD4yT_62FfYtytCs6znDBdthwCLcBGAs/s0/zz.png" alt="enter image description here" title="zz.png"></p>
+<p>torch.nn.functional.max_pool2d：<br><img src="https://lh3.googleusercontent.com/-b0O13ZAJhyk/Wi0PM31K32I/AAAAAAAAAJY/SIZS0X5h2I81J53JDyLIyIrNa9skZhUUACLcBGAs/s0/z1.png" alt="enter image description here" title="z1.png"></p>
+<h4 id="b-LeNet-in-PyTorch"><a href="#b-LeNet-in-PyTorch" class="headerlink" title="b) LeNet in PyTorch."></a>b) LeNet in PyTorch.</h4><pre><code>import torch.nn as nn
+import torch.nn.functional as F
+
+class LeNet(nn.Module):
+    def __init__(self):
+        super(LeNet, self).__init__()
+        self.conv1 = nn.Conv2d(1, 6, 5)   #in_channels:1, out_channels:6, kernel_size:5   
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        self.fc1   = nn.Linear(16*5*5, 120)
+        self.fc2   = nn.Linear(120, 84)
+        self.fc3   = nn.Linear(84, 10)
+
+    def forward(self, x):
+        out = F.relu(self.conv1(x))
+        out = F.max_pool2d(out, 2)
+        out = F.relu(self.conv2(out))
+        out = out.view(out.size(0), -1)
+        out = F.relu(self.fc1(out))
+        out = F.relu(self.fc2(out))
+        out = F.softmax(self.fc3(out))
+        return out
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/23/CNN/" rel="next" title="Convolutional Neural Networks">
+                <i class="fa fa-chevron-left"></i> Convolutional Neural Networks
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/10/24/cnn/"
+           data-title="Convolutional Neural Networks2" data-url="http://muyeby.github.io/2017/10/24/cnn/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="muyeby" />
+          <p class="site-author-name" itemprop="name">muyeby</p>
+           
+              <p class="site-description motion-element" itemprop="description">这是一个基于github和hexo的静态blog，用简单的markdown分享和记录自己的想法</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Convolutional-Neural-Networks"><span class="nav-number">1.</span> <span class="nav-text">Convolutional Neural Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Outline"><span class="nav-number">2.</span> <span class="nav-text">Outline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CNN栗子（A-Beginning-Glimpse-of-CNN）"><span class="nav-number">3.</span> <span class="nav-text">1. CNN栗子（A Beginning Glimpse of CNN）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-What-is-CNN"><span class="nav-number">4.</span> <span class="nav-text">2. What is CNN?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-什么是卷积？"><span class="nav-number">4.1.</span> <span class="nav-text">2.1 什么是卷积？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#卷积的定义"><span class="nav-number">4.1.1.</span> <span class="nav-text">卷积的定义:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-离散卷积的栗子："><span class="nav-number">4.2.</span> <span class="nav-text">2.2 离散卷积的栗子：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-二维离散的卷积："><span class="nav-number">4.2.1.</span> <span class="nav-text">a. 二维离散的卷积：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-用到二维图像上："><span class="nav-number">4.3.</span> <span class="nav-text">2.3 用到二维图像上：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-关于卷积中常用到的一些概念："><span class="nav-number">4.3.1.</span> <span class="nav-text">a.关于卷积中常用到的一些概念：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-图像上作卷积的效果："><span class="nav-number">4.3.2.</span> <span class="nav-text">b. 图像上作卷积的效果：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-用到神经网络中"><span class="nav-number">4.4.</span> <span class="nav-text">2.4 用到神经网络中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-卷积的细节"><span class="nav-number">4.5.</span> <span class="nav-text">2.5 卷积的细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-filter-Kernel-size-number"><span class="nav-number">4.5.1.</span> <span class="nav-text">a. filter/Kernel size, number</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Stride"><span class="nav-number">4.5.2.</span> <span class="nav-text">b. Stride</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-Zero-padding"><span class="nav-number">4.5.3.</span> <span class="nav-text">c. Zero-padding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-Channel"><span class="nav-number">4.5.4.</span> <span class="nav-text">d.Channel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-池化-Pooling"><span class="nav-number">4.6.</span> <span class="nav-text">2.6 池化(Pooling)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Max-pooling例子："><span class="nav-number">4.6.1.</span> <span class="nav-text">1. Max pooling例子：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Pooling的变种"><span class="nav-number">4.6.2.</span> <span class="nav-text">2. Pooling的变种</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Pooling的性质"><span class="nav-number">4.6.3.</span> <span class="nav-text">3. Pooling的性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-Flatten"><span class="nav-number">4.7.</span> <span class="nav-text">2.7 Flatten</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-Convolution-v-s-Fully-Connected"><span class="nav-number">4.8.</span> <span class="nav-text">2.8 Convolution v.s. Fully Connected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-The-whole-CNN"><span class="nav-number">4.9.</span> <span class="nav-text">2.9 The whole CNN</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Soga"><span class="nav-number">5.</span> <span class="nav-text">Soga~</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-对CNN的其他一些理解"><span class="nav-number">6.</span> <span class="nav-text">4. 对CNN的其他一些理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-关于接受域（receptive-field）"><span class="nav-number">6.1.</span> <span class="nav-text">4.1 关于接受域（receptive field）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-卷积与池化作为一种无限强的先验"><span class="nav-number">6.2.</span> <span class="nav-text">4.2 卷积与池化作为一种无限强的先验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CNN实现"><span class="nav-number">7.</span> <span class="nav-text">CNN实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-反向传播"><span class="nav-number">7.1.</span> <span class="nav-text">1. 反向传播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-共享权值的梯度问题"><span class="nav-number">7.2.</span> <span class="nav-text">2. 共享权值的梯度问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-CNN-in-Keras"><span class="nav-number">7.3.</span> <span class="nav-text">3. CNN in Keras</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-CNN-in-Pytorch"><span class="nav-number">7.4.</span> <span class="nav-text">4. CNN in Pytorch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Pytorch-相关接口"><span class="nav-number">7.4.1.</span> <span class="nav-text">a) Pytorch 相关接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-LeNet-in-PyTorch"><span class="nav-number">7.4.2.</span> <span class="nav-text">b) LeNet in PyTorch.</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">muyeby</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"muyeby"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("I5PNzNwEsJC8jTl6quYCKsT4-gzGzoHsz", "KHVS3eqloEbFBA835o01goAK");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

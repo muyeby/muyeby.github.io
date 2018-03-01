@@ -1,0 +1,953 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="编程语言," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="创建一个类：class MyNewObject(bases):
+
+    &amp;apos;write something&amp;apos;
+
+    class_suite">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python核心笔记day1--面向对象">
+<meta property="og:url" content="http://muyeby.github.io/2016/10/23/python1/index.html">
+<meta property="og:site_name" content="Muyeby's Blog">
+<meta property="og:description" content="创建一个类：class MyNewObject(bases):
+
+    &amp;apos;write something&amp;apos;
+
+    class_suite">
+<meta property="og:updated_time" content="2018-03-01T12:48:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python核心笔记day1--面向对象">
+<meta name="twitter:description" content="创建一个类：class MyNewObject(bases):
+
+    &amp;apos;write something&amp;apos;
+
+    class_suite">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'muyeby'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://muyeby.github.io/2016/10/23/python1/"/>
+
+
+
+
+
+  <title> Python核心笔记day1--面向对象 | Muyeby's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ac6471239e19ce9ace2a017c1b1cd1f2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Muyeby's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I'm a slow walker,but I never walk back</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://muyeby.github.io/2016/10/23/python1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="muyeby">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Muyeby's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python核心笔记day1--面向对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-23T08:30:20+08:00">
+                2016-10-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/23/python1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/23/python1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/10/23/python1/" class="leancloud_visitors" data-flag-title="Python核心笔记day1--面向对象">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="创建一个类："><a href="#创建一个类：" class="headerlink" title="创建一个类："></a>创建一个类：</h2><pre><code>class MyNewObject(bases):
+
+    &apos;write something&apos;
+
+    class_suite
+</code></pre><a id="more"></a>
+<p>所有新式类必须至少继承一个父类，参数bases可以是一个或多个父类；</p>
+<p>object是所有类之母，没有声明则默认作为新类的父类；</p>
+<p>变量进行实例化时，赋值在语法上不是必须的，但如果你没有把这个实例保存到一个变量中，它就没用了，会被自动垃圾收集器回收</p>
+<p>类的self 参数，它在所有的方法声明中都存在，这个参数代表实例对象本身，当你用实例调用方法时，由解释器悄悄地传递给方法的，它是自动传入的</p>
+<p><strong>init</strong>实例化时被调用，可以认为实例化是对<strong>init</strong>()的一种的调用</p>
+<p>子类和基类构造器的问题：若子类重写基类的构造器，基类的构造器就不会被自动调用了，然而还需要自己的构造器，则需要在子类的构造器中显示调用基类的构造器：<br>    class EmplAddrBookEntry(AddrBookEntry):</p>
+<pre><code>&apos;Employee Address Book Entry class&apos;
+
+def __init__(self, nm, ph, id, em):
+
+    AddrBookEntry.__init__(self, nm, ph)
+
+    self.empid = id
+
+    self.email = em
+</code></pre><h2 id="常用术语"><a href="#常用术语" class="headerlink" title="常用术语"></a>常用术语</h2><h3 id="1-抽象-实现"><a href="#1-抽象-实现" class="headerlink" title="1. 抽象/实现"></a>1. 抽象/实现</h3><p>抽象指对现实世界问题和实体的本质表现，行为和特征建模，建立一个相关的子集，可以用于描绘程序结构，从而实现这种模型</p>
+<h3 id="2-封装-接口"><a href="#2-封装-接口" class="headerlink" title="2. 封装/接口"></a>2. 封装/接口</h3><p>合成扩充了对类的描述，使得多个不同的类合成为一个大的类，来解决现实问题</p>
+<h3 id="3-派生-继承-继承结构"><a href="#3-派生-继承-继承结构" class="headerlink" title="3. 派生/继承/继承结构"></a>3. 派生/继承/继承结构</h3><ul>
+<li><p>派生描述了子类的创建，新类保留已存类类型中所有需要的数据和行为，但允许修改或者其它的自定义操作，都不会修改原类的定义。</p>
+</li>
+<li><p>继承描述了子类属性从祖先类继承这样一种方式。</p>
+</li>
+<li><p>继承结构表示多“代”派生，可以描述成一个“族谱”，连续的子类，与祖先类都有关系。</p>
+<h3 id="4-泛化-特化"><a href="#4-泛化-特化" class="headerlink" title="4. 泛化/特化"></a>4. 泛化/特化</h3></li>
+<li>泛化表示所有子类与其父类及祖先类有一样的特点</li>
+<li>特化描述所有子类的自定义，也就是，什么属性让它与其祖先类不同。<h3 id="5-自省-反射"><a href="#5-自省-反射" class="headerlink" title="5. 自省/反射"></a>5. 自省/反射</h3>自省表示给予你，程序员，某种能力来进行像“手工类型检查” 的工作，它也被称为反射。这个性质展示了某对象是如何在运行期取得自身信息的。</li>
+</ul>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><p>类的数据属性，即静态变量，不依赖于任何实例，</p>
+<p>Python严格要求，有实例，方法是不能被调用的，方法必须绑定（到一个实例）才能直接被调用</p>
+<h3 id="查看类的属性"><a href="#查看类的属性" class="headerlink" title="查看类的属性"></a>查看类的属性</h3><ol>
+<li><p>dir(类名)</p>
+</li>
+<li><p>类.<strong>dict</strong></p>
+</li>
+</ol>
+<h3 id="一个类的常见属性："><a href="#一个类的常见属性：" class="headerlink" title="一个类的常见属性："></a>一个类的常见属性：</h3><ul>
+<li><p>C.<strong>name</strong> 类Ｃ的名字（字符串）</p>
+</li>
+<li><p>C.<strong>doc</strong> 类Ｃ的文档字符串</p>
+</li>
+<li><p>C.<strong>bases</strong> 类Ｃ的所有父类构成的元组</p>
+</li>
+<li><p>C.<strong>dict</strong> 类Ｃ的属性</p>
+</li>
+<li><p>C.<strong>module</strong> 类Ｃ定义所在的模块（1.5 版本新增）</p>
+</li>
+<li><p>C.<strong>class</strong> 实例Ｃ对应的类（仅新式类中）</p>
+</li>
+</ul>
+<p>文档字符串不能被派生类继承，就是说派生类必须有自己的文档字符串</p>
+<blockquote>
+<p>访问一个类属性的时候，Python 解释器将会搜索字典以得到需要的属性。 如果在dict中没有找到， 将会在基类的字典中进行搜索，采用“深度优先搜索”顺序。基类集的搜索是按顺序的， 从左到右，按其在类定义时，定义父类参数时的顺序。</p>
+</blockquote>
+<p>调用type(instance)查看实例的类</p>
+<h3 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h3><p>能够在“运行时”创建实例属性，是Python类的优秀特性之一，Python不仅是动态类型，而且在运行时，允许这些对象属性的动态创建，但是如果该条件语句块并未被执行，属性也就不存在，而你在后面的代码中试着去访问这些属性，就会有错误发生</p>
+<p>构造器是最早可以设置实例属性的地方，再没有比这更早的可以设置实例属性的机会了</p>
+<p>如果定义了构造器，它不应当返回任何对象，因为实例对象是自动在实例化调用后返回的。相应地，init()就不应当返回任何对象（应当为 None）；</p>
+<p>实例仅有两个特殊属性,对于任意对象 I:</p>
+<ul>
+<li><p>I.<strong>class</strong> 实例化 I 的类</p>
+</li>
+<li><p>I.<strong>dict</strong> I 的属性</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程语言/" rel="tag"># 编程语言</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/19/Ml1/" rel="next" title="机器学习笔记（一）">
+                <i class="fa fa-chevron-left"></i> 机器学习笔记（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/26/python2/" rel="prev" title="Python核心笔记day2--面向对象">
+                Python核心笔记day2--面向对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/23/python1/"
+           data-title="Python核心笔记day1--面向对象" data-url="http://muyeby.github.io/2016/10/23/python1/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="muyeby" />
+          <p class="site-author-name" itemprop="name">muyeby</p>
+           
+              <p class="site-description motion-element" itemprop="description">这是一个基于github和hexo的静态blog，用简单的markdown分享和记录自己的想法</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个类："><span class="nav-number">1.</span> <span class="nav-text">创建一个类：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用术语"><span class="nav-number">2.</span> <span class="nav-text">常用术语</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-抽象-实现"><span class="nav-number">2.1.</span> <span class="nav-text">1. 抽象/实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-封装-接口"><span class="nav-number">2.2.</span> <span class="nav-text">2. 封装/接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-派生-继承-继承结构"><span class="nav-number">2.3.</span> <span class="nav-text">3. 派生/继承/继承结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-泛化-特化"><span class="nav-number">2.4.</span> <span class="nav-text">4. 泛化/特化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-自省-反射"><span class="nav-number">2.5.</span> <span class="nav-text">5. 自省/反射</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类"><span class="nav-number">3.</span> <span class="nav-text">类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看类的属性"><span class="nav-number">3.1.</span> <span class="nav-text">查看类的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个类的常见属性："><span class="nav-number">3.2.</span> <span class="nav-text">一个类的常见属性：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例属性"><span class="nav-number">3.3.</span> <span class="nav-text">实例属性</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">muyeby</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"muyeby"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("I5PNzNwEsJC8jTl6quYCKsT4-gzGzoHsz", "KHVS3eqloEbFBA835o01goAK");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

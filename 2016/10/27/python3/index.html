@@ -1,0 +1,970 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="编程语言," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="私有化简单的模块级私有化只需要在属性名前使用一个单下划线字符’_’。这就防止模块的属性用“from mymodule import *”来加载。这是严格基于作用域的，所以这同样适合于函数
+前方高能！！！！！！！！！！！！！！！！！！！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python核心笔记day3--面向对象">
+<meta property="og:url" content="http://muyeby.github.io/2016/10/27/python3/index.html">
+<meta property="og:site_name" content="Muyeby's Blog">
+<meta property="og:description" content="私有化简单的模块级私有化只需要在属性名前使用一个单下划线字符’_’。这就防止模块的属性用“from mymodule import *”来加载。这是严格基于作用域的，所以这同样适合于函数
+前方高能！！！！！！！！！！！！！！！！！！！">
+<meta property="og:updated_time" content="2018-03-01T13:06:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python核心笔记day3--面向对象">
+<meta name="twitter:description" content="私有化简单的模块级私有化只需要在属性名前使用一个单下划线字符’_’。这就防止模块的属性用“from mymodule import *”来加载。这是严格基于作用域的，所以这同样适合于函数
+前方高能！！！！！！！！！！！！！！！！！！！">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'muyeby'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://muyeby.github.io/2016/10/27/python3/"/>
+
+
+
+
+
+  <title> Python核心笔记day3--面向对象 | Muyeby's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ac6471239e19ce9ace2a017c1b1cd1f2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Muyeby's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I'm a slow walker,but I never walk back</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://muyeby.github.io/2016/10/27/python3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="muyeby">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Muyeby's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python核心笔记day3--面向对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-27T08:30:20+08:00">
+                2016-10-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/27/python3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/27/python3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/10/27/python3/" class="leancloud_visitors" data-flag-title="Python核心笔记day3--面向对象">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="私有化"><a href="#私有化" class="headerlink" title="私有化"></a>私有化</h2><p>简单的模块级私有化只需要在属性名前使用一个单下划线字符’_’。这就防止模块的属性用“from mymodule import *”来加载。这是严格基于作用域的，所以这同样适合于函数</p>
+<p>前方高能！！！！！！！！！！！！！！！！！！！</p>
+<a id="more"></a>
+<h2 id="包装与授权"><a href="#包装与授权" class="headerlink" title="包装与授权"></a>包装与授权</h2><p>包装是一个通用的名字，意思是对一个已存在的对象进行包装，不管它是数据类型，还是一段代码，可以是对一个已存在的对象，增加新的，删除不要的，或者修改其它已存在的功能。</p>
+<p>包装包括定义一个类，它的实例拥有标准类型的核心行为。换句话说，它现在不仅能唱能跳，还能够像原类型一样步行，说话。</p>
+<p>授权的过程，即是所有更新的功能都是由新类的某部分来处理，但已存在的功能就授权给对象的默认属性。实现授权的关键点就是覆盖<strong>getattr</strong>()方法，在代码中包含一个对 getattr()内建函数的调用，特别地，调用 getattr()以得到默认对象属性（数据属性或者方法）并返回它以便访问或调用。<br>特殊方法<strong>getattr</strong>()的工作方式是，当搜索一个属性时，任何局部对象首先被找到（定制的对象）。如果搜索失败了，则<strong>getattr</strong>()会被调用，然后调用 getattr()得到一个对象的默认行为。</p>
+<p>换言之，当引用一个属性时，Python 解释器将试着在局部名称空间中查找那个名字，比如一个自定义的方法或局部实例属性。如果没有在局部字典中找到，则搜索类名称空间，以防一个类属性被访问。最后，如果两类搜索都失败了，搜索则对原对象开始授权请求，此时<strong>getattr</strong>()会被调用。</p>
+<p>一个简单的实例：</p>
+<pre><code>class WrapMe(object):
+    def __init__(self, obj):
+        self.__data = obj
+    def get(self):
+         return self.__data
+    def __repr__(self):
+         return ‘self.__data‘
+     def __str__(self):
+         return str(self.__data)
+     def __getattr__(self, attr):
+         return getattr(self.__data, attr)
+</code></pre><p>说明：授权的核心就是<strong>getattr</strong>函数的编写，基本格式都是这个样子<br>在第一个例子中，我们将用到复数，因为所有 Python 数值类型，只有复数拥有属性：数据属性，及 conjugate()内建方法（求共轭复数，译者注！）。记住，属性可以是数据属性，还可以是函数或方法。</p>
+<pre><code>&gt;&gt;&gt; wrappedComplex = WrapMe(3.5+4.2j)
+&gt;&gt;&gt; wrappedComplex # wrapped object: repr() 包装的对象：repr()
+(3.5+4.2j)
+&gt;&gt;&gt; wrappedComplex.real # real attribute 实部属性
+3.5
+&gt;&gt;&gt; wrappedComplex.imag # imaginary attribute 虚部属性
+42.2
+&gt;&gt;&gt; wrappedComplex.conjugate() # conjugate() method conjugate()方法
+(3.5-4.2j)
+&gt;&gt;&gt; wrappedComplex.get() # actual object 实际对象
+(3.5+4.2j)
+</code></pre><p>可以看出授权的神奇功效，我们连续访问了复数的三个属性，但是这些属性在我们的类中我们一个都没有定义！！！！！！！！！！！</p>
+<p>对这些属性的访问，是通过 getattr()方法，授权给对象．最终调用 get()方法没有授权，因为<br>它是为我们的对象定义的——它返回包装的真实的数据对象。</p>
+<p>下一个使用我们的包装类的例子用到一个列表。我们将会创建对象，然后执行多种操作，每次授权给列表方法。</p>
+<pre><code>&gt;&gt;&gt; wrappedList = WrapMe([123, &apos;foo&apos;, 45.67])
+&gt;&gt;&gt; wrappedList.append(&apos;bar&apos;)
+&gt;&gt;&gt; wrappedList.append(123)
+&gt;&gt;&gt; wrappedList
+[123, &apos;foo&apos;, 45.67, &apos;bar&apos;, 123]
+&gt;&gt;&gt; wrappedList.index(45.67)
+2
+&gt;&gt;&gt; wrappedList.count(123)
+2
+&gt;&gt;&gt; wrappedList.pop()
+123
+&gt;&gt;&gt; wrappedList
+[123, &apos;foo&apos;, 45.67, &apos;bar&apos;]
+</code></pre><p>注意，尽管我们正在我们的例子中使用实例，它们展示的行为与它们包装的数据类型非常相似。然而，需要明白，只有已存在的属性是在此代码中授权的。</p>
+<pre><code>&gt;&gt;&gt; wrappedList[3]
+Traceback (innermost last): File &quot;&lt;stdin&gt;&quot;, line 1, in ?
+File &quot;wrapme.py&quot;, line 21, in __getattr__
+return getattr(self.data, attr)
+AttributeError: __getitem__
+</code></pre><p>特殊行为没有在类型的方法列表中，不能被访问，因为它们不是属性。一个例子是，对列表的切片操作，它是内建于类型中的，而不是像 append()方法那样作为属性存在的。从另一个角度来说,切片操作符是序列类型的一部分，并不是通过getitem()特殊方法来实现的。<br>然而机智的我们还有另一种方法：</p>
+<pre><code>&gt;&gt;&gt; realList = wrappedList.get()
+&gt;&gt;&gt; realList[3]
+&apos;bar&apos;
+</code></pre><p>现在知道为什么我们实现 get()方法了——仅仅是为了我们需要取得对原对象进行访问这种情况，我们可以从访问调用中直接访问对象的属性，而忽略局部变量（realList）。<br>get()方法返回一个对象，随后被索引以得到切片片断。</p>
+<p>再来看一个例子:</p>
+<pre><code>&gt;&gt;&gt; f = WrapMe(open(&apos;/etc/motd&apos;))
+&gt;&gt;&gt; f
+&lt;wrapMe.WrapMe object at 0x40215dac&gt;
+&gt;&gt;&gt; f.get()
+&lt;open file &apos;/etc/motd&apos;, mode &apos;r&apos; at 0x40204ca0&gt;
+&gt;&gt;&gt; f.readline()
+&apos;Have a lot of fun...\012&apos;
+&gt;&gt;&gt; f.tell()
+21
+&gt;&gt;&gt; f.seek(0)
+&gt;&gt;&gt; print f.readline(),
+Have a lot of fun...
+&gt;&gt;&gt; f.close()
+&gt;&gt;&gt; f.get()
+&lt;closed file &apos;/etc/motd&apos;, mode &apos;r&apos; at 0x40204ca0&gt;
+</code></pre><p>还有更会玩的：</p>
+<pre><code>&gt;&gt;&gt; print &quot;&lt;%s file %s, mode %s at %x&gt;&quot; % \
+... (f.closed and &apos;closed&apos; or &apos;open&apos;, &apos;f.name&apos;,&apos;f.mode&apos;, id(f.get()))
+&lt;closed file &apos;/etc/motd&apos;, mode &apos;r&apos; at 80e95e0&gt;
+</code></pre><p>会写上面的程序，就说明对授权的基础问题不大了,还有更变态的例子，个人感觉用途不大，所以就不粘了.</p>
+<h2 id="python2-2后新式类的特性"><a href="#python2-2后新式类的特性" class="headerlink" title="python2.2后新式类的特性"></a>python2.2后新式类的特性</h2><p>新式类和工厂函数的出现使得isinstance()函数用途大增，以前我们对于整数类型的判断要这样：</p>
+<pre><code>if type(obj)==type(0)
+if type(obj) is type(0) #更好一点
+</code></pre><p>现在我们只需要这样</p>
+<pre><code>if isinstance(obj,int)
+if isinstance(obj,(int,long))
+</code></pre><p>但是要注意的一点，尽管isinstance很灵活，但是他并不是严格的比较，如果obj是提供的类的实例或者他的子类，返回值也同样是true，如果要进行严格的匹配，你仍然需要is操作符，如：</p>
+<pre><code>if type(obj) is int
+</code></pre><h2 id="slots类属性"><a href="#slots类属性" class="headerlink" title="slots类属性"></a><strong>slots</strong>类属性</h2><p>之前我们分析类的时候说过，类的心脏就是<strong>dict</strong>，类和实例用它来跟踪对应的属性。你用ins.foo和用ins.<strong>dict</strong>来访问foo属性是一致的。</p>
+<p>但是字典就会存在问题，字典会展用大量的内存，如果恰巧你的实例很多，属性很少，而内存还很急，那么你可以用<strong>slots</strong>来代替dict，slot是类变量，他可以是列表。元组，或者其他可迭代对象。用例如下：</p>
+<pre><code>class slotsDemo(object):
+    \_\_slots\_\_ = (&apos;foo&apos;,&apos;bar&apos;)
+&gt;&gt;&gt; c = slotsDemo()
+&gt;&gt;&gt; c.foo = 42
+&gt;&gt;&gt; c.xxx = &apos;123&apos;
+&gt;&gt;&gt; AttributeError...........
+</code></pre><p>这个特性就是为了节省内存，但是一个弊端就是它禁止用户随心所欲增加实例属性，也是出于类型的’安全‘，所以上面会报错，当然如果定义了slots就自然不会有dict了。<br>嗯，今天就到这里，python面向对象的内容也看得差不多了，明天是习题</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程语言/" rel="tag"># 编程语言</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/26/python2/" rel="next" title="Python核心笔记day2--面向对象">
+                <i class="fa fa-chevron-left"></i> Python核心笔记day2--面向对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/31/python4/" rel="prev" title="Python核心笔记day4--面向对象">
+                Python核心笔记day4--面向对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/27/python3/"
+           data-title="Python核心笔记day3--面向对象" data-url="http://muyeby.github.io/2016/10/27/python3/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="muyeby" />
+          <p class="site-author-name" itemprop="name">muyeby</p>
+           
+              <p class="site-description motion-element" itemprop="description">这是一个基于github和hexo的静态blog，用简单的markdown分享和记录自己的想法</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#私有化"><span class="nav-number">1.</span> <span class="nav-text">私有化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包装与授权"><span class="nav-number">2.</span> <span class="nav-text">包装与授权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python2-2后新式类的特性"><span class="nav-number">3.</span> <span class="nav-text">python2.2后新式类的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slots类属性"><span class="nav-number">4.</span> <span class="nav-text">slots类属性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">muyeby</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"muyeby"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("I5PNzNwEsJC8jTl6quYCKsT4-gzGzoHsz", "KHVS3eqloEbFBA835o01goAK");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

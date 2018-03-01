@@ -1,0 +1,1080 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="机器学习," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简单分词模型之HMM&amp;amp;&amp;amp;CRF本文主要介绍两个常见而又简单的分词模型: HMM(隐马尔科夫模型)和CRF(条件随机场模型)．之前我们介绍的是基于词的n元LM的分词方法,而本文介绍的是由字构词思想的汉语分词模型.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分词相关研究">
+<meta property="og:url" content="http://muyeby.github.io/2017/10/17/WS-model/index.html">
+<meta property="og:site_name" content="Muyeby's Blog">
+<meta property="og:description" content="简单分词模型之HMM&amp;amp;&amp;amp;CRF本文主要介绍两个常见而又简单的分词模型: HMM(隐马尔科夫模型)和CRF(条件随机场模型)．之前我们介绍的是基于词的n元LM的分词方法,而本文介绍的是由字构词思想的汉语分词模型.">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/005xvrQfly1fkfvlik173j30az05g74y.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mc5mb88kj20cc08sq32.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/005xvrQfly1fkeg4b7kpgj30b604r74b.jpg">
+<meta property="og:image" content="http://pic002.cnblogs.com/images/2012/381513/2012032419295378.png">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mdxovd5ij20kk07wmxh.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mdykecbpj20jm07gt8x.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6cbb8645gw1f6meyxk07pj20uc04cmxj.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/6cbb8645gw1f6mf09nvkej20se03ujrp.jpg">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1371984-b83a14ead15dd24f.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1371984-7ea437efbff95f58.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mfv3kvpkj20tc046wew.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mfw5mynmj20mu034dfy.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/6cbb8645gw1f6mfyksvwij20jk0483yn.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mfztr0lej20ha07kdg9.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/6cbb8645gw1f6mg5y39l1j20f203s3yk.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/6cbb8645gw1f6mg6ripiyj20eg02y74a.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/6cbb8645gw1f6nbkxm3b0j20fk0asaas.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/6cbb8645gw1f6nbrc36k4j20ds038dft.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/6cbb8645gw1f6nbs8vpr6j20ya02a0t1.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/005xvrQfly1fkeg4b7kpgj30b604r74b.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mdxovd5ij20kk07wmxh.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mdykecbpj20jm07gt8x.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescxvg78j309x09x40c.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescydkqvj30al07zabf.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/006Fmjmcly1fiescvij5gj309d05c74w.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/006Fmjmcly1fiesd0mfzpj30jk07ugnd.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/large/006Fmjmcly1fiesdqe0dtj30js0j0dno.jpg">
+<meta property="og:updated_time" content="2018-03-01T13:07:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分词相关研究">
+<meta name="twitter:description" content="简单分词模型之HMM&amp;amp;&amp;amp;CRF本文主要介绍两个常见而又简单的分词模型: HMM(隐马尔科夫模型)和CRF(条件随机场模型)．之前我们介绍的是基于词的n元LM的分词方法,而本文介绍的是由字构词思想的汉语分词模型.">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/005xvrQfly1fkfvlik173j30az05g74y.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'muyeby'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://muyeby.github.io/2017/10/17/WS-model/"/>
+
+
+
+
+
+  <title> 分词相关研究 | Muyeby's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ac6471239e19ce9ace2a017c1b1cd1f2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Muyeby's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I'm a slow walker,but I never walk back</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://muyeby.github.io/2017/10/17/WS-model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="muyeby">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Muyeby's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                分词相关研究
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-17T08:30:20+08:00">
+                2017-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/17/WS-model/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/17/WS-model/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/10/17/WS-model/" class="leancloud_visitors" data-flag-title="分词相关研究">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简单分词模型之HMM-amp-amp-CRF"><a href="#简单分词模型之HMM-amp-amp-CRF" class="headerlink" title="简单分词模型之HMM&amp;&amp;CRF"></a>简单分词模型之HMM&amp;&amp;CRF</h1><p>本文主要介绍两个常见而又简单的分词模型: HMM(隐马尔科夫模型)和CRF(条件随机场模型)．之前我们介绍的是基于词的n元LM的分词方法,而本文介绍的是由字构词思想的汉语分词模型.<br><a id="more"></a></p>
+<blockquote>
+<p>由字构词的分词方法认为每个字在构成一个特定的词语时都占据着一个确定的<strong>构词位置（词位）</strong>, 假如规定每个字只有４个词位，词首（B）,词中（M），词尾（E）,单独成词（S）,于是例子<br>“你/现在/应该/去/幼儿园/了”　可以表达为：<br> 你S现B在E应B该E去S幼B儿M园E了S<br> 这样, 只要对一句话的每个字进行分类后, 就能得到分词结果了。</p>
+<h2 id="1-基本定义"><a href="#1-基本定义" class="headerlink" title="1.基本定义:"></a>1.基本定义:</h2><h4 id="1-1-图"><a href="#1-1-图" class="headerlink" title="1.1  图:"></a>1.1  图:</h4><p>图是由结点和连接结点的边组成的集合。结点和边分别记作v和e，结点和边的集合分别记作V和E，图记作G=（V，E）。无向图是指边没有方向的图。</p>
+<h4 id="1-2-概率图模型（PGM）"><a href="#1-2-概率图模型（PGM）" class="headerlink" title="1.2  概率图模型（PGM）"></a>1.2  概率图模型（PGM）</h4><p>概率图模型是一类<strong>用图的形式表示随机变量之间条件依赖关系的概率模型</strong>，是概率论与图论的结合。根据图中边有无方向，常用的概率图模型分为两类：有向图（贝叶斯网络、信念网络）、无向图（马尔可夫随机场、马尔可夫网络）。</p>
+<h6 id="1-有向概率图介绍"><a href="#1-有向概率图介绍" class="headerlink" title="(1) 有向概率图介绍"></a>(1) 有向概率图介绍</h6><p>有向图的联合概率: $P(X_1,X_2…X<em>N) = \prod\limits</em>{i=1}^N P(X_i|\pi(X_i))$<br>其中，$\pi(X_i)$是$X_i$的父节点。<br><img src="http://wx2.sinaimg.cn/mw690/005xvrQfly1fkfvlik173j30az05g74y.jpg" alt="enter image description here"><br>在上图中, 联合概率可以表示为<br>$P(X_1,X_2…X_5) = P(X_1)P(X_2|X_1)P(X_3|X_2)P(X_4|X_2)P(X_5|X_3X_4)$</p>
+<p>######(2) 无向概率图介绍<br><strong>定义(概率无向图模型）</strong>设有联合概率分布$P(Y)$, 由无向图G=(V,E)表示，在图G中，结点$v$表示随机变量，边$e$表示随机变量之间的依赖关系。如果联合概率分布$P(Y)$满足<em>成对、局部或全局马尔可夫性</em>，就称此联合概率分布为<em>概率无向图模型(probability undirected graphical model)，或马尔可夫随机场(Markov random field)。</em></p>
+<p>######(2).1 概率无向图模型的因子分解<br>我们首先给出无向图中的团与最大团的定义。<br><strong>定义(团与最大团）</strong>无向图G中任何两个结点均有边连接的结点子集称为<em>团（clique)</em>。若C是无向图G的一个团，并且不能再加进任何一个G的结点使其成为一个更大的团，则称此C为<em>最大团（maximal clique)</em>。</p>
+</blockquote>
+<p>无向图中, 不能用条件概率密度对模型进行参数化, 而是使用一种成为<em>团势能(clique potentials)</em>的参数化因子.  所谓团势能又称势函数, 是定义在一个团上的非负实函数, 每个团都对应着一个势函数, 表示团的一个状态.</p>
+<p>下图表示由4个结点组成的无向图。图中由2个结点组成的团有5个:{y1,y2},{y2,y3}，{y3,y4}和{y4,y2}，{y1,y3}。有2个最大团：{y1,y2,y3}和{y2,y3,y4}。而{y1,y2,y3,y4}不是一个团，因为y1和y4没有边连接。</p>
+<p><img src="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mc5mb88kj20cc08sq32.jpg" alt="enter image description here"></p>
+<p>将概率无向图模型的联合概率分布表示为其最大团上的随机变量的函数的乘积形式的操作，称为概率无向图模型的<em>因子分解（factorization)</em>。</p>
+<p>给定概率无向图模型，设其无向图为G，C为G上的最大团，$Y_C$表示C对应的随机变量。那么概率无向图模型的联合概率分布$P(Y)$可写作图中所有最大团C上的函数$\Psi_c(Y_c)$的乘积形式，即</p>
+<blockquote>
+<p>$P(Y) = \frac{1}{Z}\prod\limits_C\Psi_c(Y_c)$</p>
+</blockquote>
+<p>其中，Z是规范化因子（normalization factor),由式</p>
+<blockquote>
+<p>$Z = \sum\limits_Y\prod\limits_C\Psi_c(Y_c)$</p>
+</blockquote>
+<p>给出。规范化因子保证$P(Y)$构成一个概率分布。$\Psi_c(Y_c)$函数称为势函数(potential function)。这里要求势函数$\Psi_c(Y_c)$是严格正的，通常定义为指数函数：</p>
+<blockquote>
+<p>$\Psi_c(Y_c) = exp{-E(Y_c) }$</p>
+</blockquote>
+<p>概率无向图模型的因子分解由下述定理来保证。</p>
+<blockquote>
+<p><strong>定理(Hammersley-Clifford定理）</strong>概率无向图模型的联合概率分布可以表示为如下形式：</p>
+<blockquote>
+<p>$P(Y) = \frac{1}{Z}\prod\limits_C\Psi_c(Y_c)$<br>$Z = \sum\limits_Y\prod\limits_C\Psi_c(Y_c)$</p>
+</blockquote>
+<p>其中，C是无向图的最大团， $Y_c$是C的结点对应的随机变量，$\Psi_c(Y_c)$是C上定义的严格正函数，乘积是在无向图所有的最大团上进行的。</p>
+</blockquote>
+<hr>
+<h2 id="2-HMM模型分词"><a href="#2-HMM模型分词" class="headerlink" title="2. HMM模型分词"></a>2. HMM模型分词</h2><p>本节主要介绍HMM(隐马尔科夫模型)的基本原理(模型和解码过程)及其在分词任务上的应用.</p>
+<h3 id="2-1-HMM的概率图表示"><a href="#2-1-HMM的概率图表示" class="headerlink" title="2.1 HMM的概率图表示"></a>2.1 HMM的概率图表示</h3><p><img src="http://wx1.sinaimg.cn/mw690/005xvrQfly1fkeg4b7kpgj30b604r74b.jpg" alt="enter image description here"></p>
+<blockquote>
+<p>显然上图是有向概率图,箭头表示依赖关系<br><strong>顶点</strong>:  $x_1,x_2….x_n$是观测变量, 以分词为例就是指的未切分的句子；$y_1,y_2….y_n$ 是隐变量,这里对应我们的${B,E,M,S}$中的元素</p>
+<p><strong>边</strong>:  隐变量间的边表示条件转移概率 $P(y_{t+1}=s<em>j|y</em>{t}=s_j)$, 隐变量与观测变量间的边表示发射概率(观测概率)$P(x_t=o_j|y_t=s_j)$</p>
+<p><strong>HMM三要素:</strong><br>一个隐马尔科夫模型是一个三元组$（\pi, A, B）$ ,其中</p>
+<blockquote>
+<p>$\pi=p(\pi<em>i),初始化概率向量；$<br>$A= (a</em>{ij}), 状态转移矩阵；P(y_{t+1}=s<em>j|y</em>{t}=s<em>j)$<br>$B = (b</em>{ij}),混淆(观测)矩阵；P(x_t=o_j|y_t=s_j)$</p>
+</blockquote>
+<p><strong>齐次马尔科夫假设(一阶马尔科夫假设):</strong>  假设隐藏的马尔科夫链在任意时刻t的状态只依赖于前一时刻的状态,与其他时刻的状态与观测无关,与时刻t无关<br>$P(y<em>t|y</em>{t-1},x_{t-1},…y_1,x_1) =  P(y<em>t|y</em>{t-1})$</p>
+<p><strong>观测独立性假设:</strong>  任意时刻的观测只依赖于该时刻的马尔科夫链的状态,与其他观测及状态无关<br>$P(x_t|y_T,x<em>T,y</em>{T-1},x<em>{T-1},…y</em>{t+1},x_{t+1},y<em>t,y</em>{t-1},x_{t-1}…y_1,x_1)=P(x_t|y_t)$</p>
+<p>###2.2 HMM三个问题</p>
+<ul>
+<li>概率计算问题 :<br>$已知\lambda = (A,B,\pi)和观测序列X=(x_1,x_2…x_t),求P(X|\lambda)$</li>
+<li>学习问题:<br>$已知观测序列,估计模型\lambda = (A,B,\pi), 使得在该模型下观测到X的概率P(X|\lambda)最大$</li>
+<li>预测问题(解码问题):<br>$已知\lambda = (A,B,\pi)和观测序列X=(x_1,x_2…x_t),$求给定观测序列后,使条件概率$P(Y|X)$最大的状态序列$Y=(y_1,y_2…y_t)$</li>
+</ul>
+</blockquote>
+<p>我们这里主要关注解码问题.</p>
+<p>###2.3 HMM分词</p>
+<h4 id="Learning-Stage—-easy-here"><a href="#Learning-Stage—-easy-here" class="headerlink" title="Learning Stage—-easy here"></a>Learning Stage—-easy here</h4><p>HMM在中文分词任务上的参数可以通过<strong>监督</strong>(统计频率+平滑)的方法直接估计,得到$\lambda = (A,B,\pi)$ </p>
+<blockquote>
+<p>还有另一种无监督参数学习方法(Baum-Welch)算法</p>
+</blockquote>
+<h4 id="Decoding-Stage"><a href="#Decoding-Stage" class="headerlink" title="Decoding Stage"></a>Decoding Stage</h4><p>我们期望通过在隐状态解空间内搜索, 找到一个隐状态序列$Y=(y_1,y_2….y_t)$, 使得$Y$可以最大化我们的 scoring rule (the probability of possible segmentations y over x) , 形式化表示为: </p>
+<blockquote>
+<p>$Y = \mathop{\arg\max}\limits_Y P(Y|\lambda,X)$</p>
+</blockquote>
+<p>搜索的策略—-Viterbi (后面讲细节)</p>
+<h4 id="Scoring-Rule"><a href="#Scoring-Rule" class="headerlink" title="Scoring Rule"></a>Scoring Rule</h4><p>由条件概率公式, 最大化$P(Y|\lambda,X)$等价于最大化$P(Y,X|\lambda)$, 因为对于$\forall  Y’ $分母都是一样的. 而 </p>
+<blockquote>
+<p>$P(Y,X) = P(y_1)P(x_1|y<em>1)\prod\limits</em>{i=2}^{t}P(y<em>i|y</em>{i-1})P(x_i|y_i)$  </p>
+</blockquote>
+<p>这里的$P(y_1),P(y<em>i|y</em>{i-1}),P(x_i|y_i)$就是在学习阶段得到的模型$\lambda$的初始化概率,状态转移概率,观测概率.</p>
+<blockquote>
+<p>根据上面的式子可以发现HMM对联合概率建模,是生成式模型 </p>
+</blockquote>
+<p>至此, 我们get了如何用隐马模型去评估一个切分结果的好坏, 下面就是根据一个搜索策略去遍历解空间, 找到最优解了.</p>
+<h4 id="HMM分词器解码过程"><a href="#HMM分词器解码过程" class="headerlink" title="HMM分词器解码过程"></a>HMM分词器解码过程</h4><p><img src="http://pic002.cnblogs.com/images/2012/381513/2012032419295378.png" alt="enter image description here"></p>
+<p>与上面图片不同的是,HMM分词器有四个隐含状态,需要填满一个4$\times$t的二维数组.</p>
+<h2 id="3-CRF-分词"><a href="#3-CRF-分词" class="headerlink" title="3. CRF 分词"></a>3. CRF 分词</h2><p>本节主要介绍CRF(条件随机场模型)的基本原理(模型和解码过程)及其在分词任务上的应用.</p>
+<p>###3.1 条件随机场的定义:<br><strong>定义(条件随机场)</strong> 设X与Y是随机变量，$P(Y|X)$是在给定X的条件下Y的条件概率分布。若随机变量Y构成一个由无向图$G = (V,E)$表示的马尔可夫随机场，即</p>
+<blockquote>
+<p>$P(Y_v|X,Y_w,w\ne v) = P(Y_v|X,Y_w,w \sim v)$</p>
+</blockquote>
+<p>对任意结点$v$成立，则称条件概率分布$P(Y|X)$为条件随机场。<br>式中$w≠v$表示结点v以外的所有结点，$w\sim v$表示在图$G = (V,E)$ 中与结点v有边连接的所有结点w, $Y_v$与$Y_w$为结点$v,w$对应的随机变量。</p>
+<blockquote>
+<p>在条件随机场定义中并没有要求$X和Y$具有相同的结构。在分词任务中，一般假设$X和Y$有相同的图结构且主要考虑无向图为线性链的情况，即</p>
+<blockquote>
+<p>$G= (V={1,2,3…n},E = {(i,i+1)}), 其中i=1,2…n-1$</p>
+</blockquote>
+</blockquote>
+<p><strong>(线性链条件随机场)</strong> 设$X=(X_1,X_2…X_n), Y = (Y_1,Y_2…Y_n)$均为线性链表示的随机变量序列，若在给定随机变量序列$X$的条件下，随机变量序列Y的条件概率分布$P(Y|X)$构成条件随机场，即满足马尔可夫性</p>
+<blockquote>
+<p>$P(Y_i|X,Y_1,Y<em>2…Y</em>{i-1},Y_{i+1}…Y_n) = P(Y<em>i|X,Y</em>{i-1},Y_{i+1})$<br>$i = 1,2,3…n$ (在i=1和n时只考虑单边)</p>
+</blockquote>
+<p>则称$P(Y|X)$为<strong>线性链条件随机场</strong>。在标注问题中，$X$表示输入观测序列，$Y$表示对应的输出标记序列或状态序列.<br><img src="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mdxovd5ij20kk07wmxh.jpg" alt="enter image description here"><br>    　　　　　　　　　　　　        线性链条件随机场<br><img src="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mdykecbpj20jm07gt8x.jpg" width="４56" height="236"><br>      　　　　　　X和Y有相同的图结构的线性链条件随机场</p>
+<p>###线性条件随机场的参数化形式<br>根据Hammersley-Clifford定理,可以给出线性链条件随机场$P(Y|X)$因子分解式，各因子是定义在相邻两个结点(最大团)上的函数。</p>
+<p><strong>定理(线性链条件随机场的参数化形式）</strong>设$P(Y|X)$为线性链条件随机场，则在随机变量$X取值为x$的条件下，随机变量$Y取值为y$的条件概率具有如下形式:<br><img src="http://ww1.sinaimg.cn/large/6cbb8645gw1f6meyxk07pj20uc04cmxj.jpg" alt="enter image description here"><br>其中,<br><img src="http://ww2.sinaimg.cn/large/6cbb8645gw1f6mf09nvkej20se03ujrp.jpg" alt="enter image description here"></p>
+<p>式中，$t_i$和$s<em>i$是<strong>特征函数</strong>，$\lambda </em>{k}和\mu_k$是对应的权值。$Z(x)$是规范化因子，求和是在所有可能的输出序列上进行的。(这里面的特征函数有些抽象，并且也不知道为什么有两项而且要加起来，$i,k,l$分别是什么？这些问题都不用急，下文会讲解。)</p>
+<blockquote>
+<p>CRF是对条件概率建模,所以是判别式模型</p>
+</blockquote>
+<p>上面两个式子是<strong>线性链条件随机场模型</strong>的基本形式，表示给定输入序列x,对输出序列y预测的条件概率。</p>
+<blockquote>
+<p>其中$t_k$是定义在边上(<em>最大团</em> )的特征函数，称为<strong>转移特征</strong>（t是transition的缩写，方便记忆），依赖于当前和前一个位置; $s_l$是定义在结点上的特征函数，称为<strong>状态特征</strong>（s是status的缩写），依赖于当前位置（无论哪种特征函数，都将当前可能的$y_i$作为参数）。$t_k$和$s_l$都依赖于位置，是局部特征函数。通常，特征函数取值为实数(这里是0,1), 当特征条件满足时取值为1,否则为0。</p>
+</blockquote>
+<p>条件随机场完全由<strong>特征函数和对应的权值$\lambda_k、\mu_l$</strong>确定。</p>
+<p>举个特征函数的栗子:</p>
+<blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1371984-b83a14ead15dd24f.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Blockquote"><br>当$l_{i-1}$是B，$l_i$是E时，$f_1$ = 1，其他情况$f_1$ = 0。$w_1$也应当是正的，并且$w_1$越大，说明我们越认为B后面应当跟一个E。<br><img src="http://upload-images.jianshu.io/upload_images/1371984-7ea437efbff95f58.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="enter image description here"><br>可以设置为如果$l<em>i和l</em>{i-1}$都是E，那么$f_2$等于1，其他情况$f_2$ = 0。这里，我们应当可以想到$w_2$是负的，并且$w_2$的绝对值越大，表示我们越不认可E后面还是E的标注序列。</p>
+<p>这里只给出了转移特征函数的例子, 对于状态特征也是同理</p>
+</blockquote>
+<p>线性链条件随机场也是对数线性模型（loglinear model)。</p>
+<blockquote>
+<p>分子的形式可以看成是$ exp(w_1^{T}{\phi_1(x,y)} + w_2^T  \phi_2(x,y)) $</p>
+</blockquote>
+<h3 id="线性条件随机场的简化形式"><a href="#线性条件随机场的简化形式" class="headerlink" title="线性条件随机场的简化形式"></a>线性条件随机场的简化形式</h3><p>为了方便表示,我们给出条件随机场的简化表示形式.<br>为简便起见，首先将转移特征和状态特征及其权值用统一的符号表示。设有$K_1$个转移特征，$K_2$个状态特征，$K = K_1+K_2$,记<br><img src="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mfv3kvpkj20tc046wew.jpg" alt="enter image description here"><br>然后对转移与状态特征在各个位置$i$求和，记作:<br><img src="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mfw5mynmj20mu034dfy.jpg" alt="enter image description here"><br>再用$w_k$示特征$f_k(y,x)$的权值，即<br><img src="http://ww3.sinaimg.cn/large/6cbb8645gw1f6mfyksvwij20jk0483yn.jpg" alt="enter image description here"><br>于是，条件随机场可表示为<br><img src="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mfztr0lej20ha07kdg9.jpg" alt="enter image description here"><br>则条件随机场可以写成向量$w$与$F(y,x)$的内积的形式:<br><img src="http://ww3.sinaimg.cn/large/6cbb8645gw1f6mg5y39l1j20f203s3yk.jpg" alt="enter image description here"></p>
+<p>其中，<br><img src="http://ww3.sinaimg.cn/large/6cbb8645gw1f6mg6ripiyj20eg02y74a.jpg" alt="enter image description here"></p>
+<p>###3.2 CRF的3个问题</p>
+<ul>
+<li>概率计算问题 :<br> 给定条件随机场$P(Y|X)$，输入序列x和输出序列y,计算条件概率$P(Y=y<em>i|X) ,  P(Y</em>{i-1}=y_{i-1},Y_i=y_i|X) $以及相应的数学期望的问题。</li>
+<li>学习问题:<br>估计条件随机场模型参数的问题，即条件随机场的学习问题。条件随机场模型实际上是定义在时序数据上的<strong>对数线形模型</strong>，主要学习参数$w$，其学习方法包括极大似然估计和正则化的极大似然估计。具体的优化实现算法有改进的迭代尺度法IIS、梯度下降法以及拟牛顿法。(具体细节不做展开)</li>
+<li>预测问题(解码问题):——我们的关注点<br>条件随机场的预测问题是给定条件随机场$P(Y|X)$和输入序列（观测序列）X,求条件概率最大的输出序列（标记序列）$Y^*$，即对观测序列进行标注，条件随机场的预测算法依旧是维特比算法。</li>
+</ul>
+<p>###3.3 CRF分词</p>
+<h4 id="Learning-Stage"><a href="#Learning-Stage" class="headerlink" title="Learning Stage"></a>Learning Stage</h4><p>通过(正则化的)极大似然估计可以求得参数$w$, 也就知道了条件概率分布$P(Y|X)$</p>
+<h4 id="Decoding-Stage-1"><a href="#Decoding-Stage-1" class="headerlink" title="Decoding Stage"></a>Decoding Stage</h4><p>寻找$Y^*$,使得条件概率$P(Y|X)$最大.形式化表示为:<br><img src="http://ww4.sinaimg.cn/large/6cbb8645gw1f6nbkxm3b0j20fk0asaas.jpg" alt="enter image description here"><br>为了求解最优路径(动态规划)，将$\max \limits_y (w \centerdot F(y,x))$写成如下形式：<br><img src="http://ww2.sinaimg.cn/large/6cbb8645gw1f6nbrc36k4j20ds038dft.jpg" alt="enter image description here"><br>其中,<br><img src="http://ww3.sinaimg.cn/large/6cbb8645gw1f6nbs8vpr6j20ya02a0t1.jpg" alt="enter image description here"><br>由此, 可以由维特比算法解决:</p>
+<p>状态转移方程:<br>$\delta_t(y<em>t=l) = \max\limits</em>{1\le j\le m}{ \delta<em>{t-1}(y</em>{t-1}=j) + w \centerdot F<em>t(y</em>{t-1}=j,y_t=l,x) } $</p>
+<p>至此,CRF解码问题的简要介绍结束.</p>
+<p>##4 关于CRF的一点思考 </p>
+<h3 id="4-1-CRF与逻辑回归"><a href="#4-1-CRF与逻辑回归" class="headerlink" title="4.1 CRF与逻辑回归"></a>4.1 CRF与逻辑回归</h3><p>仔细观察CRF的条件概率:<br>$P(Y|X) = \frac{exp(score(Y|X))}{\sum\limits<em>{Y’}exp(score(Y’|X))} = \frac{exp(w\centerdot F(Y,X))}{\sum\limits</em>{Y’}exp(w\centerdot F(Y’,X))}$<br>是不是有点逻辑回归的味道?</p>
+<blockquote>
+<p><strong>note:</strong><br>事实上，条件随机场是逻辑回归的序列化版本。逻辑回归是用于分类的对数线性模型，条件随机场是用于序列化标注的对数线性模型。</p>
+</blockquote>
+<h3 id="4-2-CRF与HMM的比较"><a href="#4-2-CRF与HMM的比较" class="headerlink" title="4.2 CRF与HMM的比较"></a>4.2 CRF与HMM的比较</h3><p>对于分词问题, 之前介绍的HMM也能解决, HMM的思路是用生成办法，就是说，在已知要标注的句子X的情况下，去判断生成标注序列Y的概率，如下所示：<br>$P(Y, X) = P(X_1) \prod _i P(Y<em>i|Y</em>{i-1})P(X_i|Y_i)$</p>
+<blockquote>
+<p>那么HMM与CRF相比如何呢?</p>
+</blockquote>
+<p>我们从两个角度来分析这个问题:</p>
+<p>1 . <strong>数学角度</strong></p>
+<blockquote>
+<p> 我们对上面的式子取对数, 可以得到<br>$log P(Y, X) = log P(X_1) +  \sum _i log P(Y<em>i|Y</em>{i-1}) + \sum _i log P(X_i|Y<em>i) $<br>我们把这个式子与CRF的式子进行比较：<br>$log P(Y|X) = \sum\limits</em>{i,k}^n \lambda_k \centerdot t<em>k(y</em>{i-1},y<em>i,i,x) +  \sum\limits</em>{i,l}^n \mu_l \centerdot s_l(y_i,i,x)$<br>可以发现，如果我们把第一个HMM式子中的log形式的概率看做是第二个CRF式子中的特征函数的权重$\lambda, \mu$的话，我们会发现，CRF和HMM具有相同的形式, 可以这样构造CRF的特征函数<br>对于HMM中的每一个转移概率$p(Y_i=y<em>i|Y</em>{i-1}=y_{i-1})$,我们可以定义这样的一个特征函数：<br>$t_k(X, Y_i,Y_i-1, i) = 1$<br>该特征函数仅当$Y_i=y<em>i, Y</em>{i-1}=y_{i-1}$时才等于1。这个特征函数的权重如下：<br>$\lambda_k = log(Y_i=y<em>i|Y</em>{i-1}=y_{i-1})$<br>同理, 对于HMM中的发射概率，我们也都可以定义相应的特征函数$s_l$，并让该特征函数的权重$\mu$等于HMM中的log形式的发射概率。<br>可以发现, 用这些形式的特征函数和相应的权重计算出来的$p(Y|X)$和对数形式的HMM模型几乎是一样的！<br>所以:<br><strong>每一个HMM模型都等价于某个CRF </strong><br><strong>每一个HMM模型都等价于某个CRF</strong><br><strong>每一个HMM模型都等价于某个CRF </strong></p>
+</blockquote>
+<p>2 . <strong>图模型角度</strong><br><img src="http://wx1.sinaimg.cn/mw690/005xvrQfly1fkeg4b7kpgj30b604r74b.jpg" alt="enter image description here"></p>
+<p><img src="http://ww1.sinaimg.cn/large/6cbb8645gw1f6mdxovd5ij20kk07wmxh.jpg" alt="enter image description here"><br>    　　　　　　　　　　　　线性链条件随机场<br><img src="http://ww4.sinaimg.cn/large/6cbb8645gw1f6mdykecbpj20jm07gt8x.jpg" width="４56" height="236"><br>      　　　　　　X和Y有相同的图结构的线性链条件随机场</p>
+<blockquote>
+<p>从上图可以看出<br>CRF 是无向图，每个节点既依赖于左邻节点，也依赖于右邻节点，而HMM是有向图，只考虑左侧节点的信息，因此HMM不如CRF．</p>
+</blockquote>
+<h3 id="4-3-本节的图模型与LM分词的比较"><a href="#4-3-本节的图模型与LM分词的比较" class="headerlink" title="4.3 本节的图模型与LM分词的比较"></a>4.3 本节的图模型与LM分词的比较</h3><ul>
+<li>基于词的ｎ元语法模型对于对于集内词（词典词）的处理可以获得比较好的性能表现，而对集外词（未登录词）的分词效果欠佳．</li>
+<li>基于字（HMM,CRF）模型正好相反，它对集外词的处理拥有较好的鲁棒性，对集内词的处理却不是非常理想．</li>
+</ul>
+<p>具体原因解释参见：<br> &lt;&lt;统计自然语言处理&gt;&gt; chap 7.2</p>
+<h2 id="5-当下深度学习中文分词技术"><a href="#5-当下深度学习中文分词技术" class="headerlink" title="5. 当下深度学习中文分词技术"></a>5. 当下深度学习中文分词技术</h2><ul>
+<li>Pei 2014的模型与Zheng 2013 — Window Based NN分类器<blockquote>
+<p><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescxvg78j309x09x40c.jpg" alt="enter image description here"><br>结果：<br><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiescydkqvj30al07zabf.jpg" alt="enter image description here"></p>
+</blockquote>
+</li>
+</ul>
+<p>通过加入bigram特征终于做到了和传统特征工程comparable<br>2013年之前的都是非NN传统方法。截止2014年，NN方法没有取得显著成绩。</p>
+<ul>
+<li><p>sequence模型</p>
+<blockquote>
+<p>Chen等人2015年：　GRU/LSTM　＋ bigram<br><img src="http://wx1.sinaimg.cn/large/006Fmjmcly1fiescvij5gj309d05c74w.jpg" alt="enter image description here"></p>
+</blockquote>
+</li>
+<li><p>Word-based Methods<br>Cai 2016: 跳出了序列标注的框框，直接对分词结果建模。<br><img src="http://wx2.sinaimg.cn/large/006Fmjmcly1fiesd0mfzpj30jk07ugnd.jpg" alt="enter image description here"><br>重新跑了Chen的实验, 并去掉了Chen的习语词典.</p>
+</li>
+<li>Multi-Criteria Joint Learning— 引入GAN  + bigram<br><img src="http://wx3.sinaimg.cn/large/006Fmjmcly1fiesdqe0dtj30js0j0dno.jpg" alt="enter image description here"></li>
+</ul>
+<h2 id="6-一点扩展"><a href="#6-一点扩展" class="headerlink" title="6. 一点扩展"></a>6. 一点扩展</h2><ul>
+<li><p>文中介绍的是HMM是基于一阶马尔科夫假设的, 扩展到二阶,三阶?</p>
+<blockquote>
+<p>参照: <a href="https://arxiv.org/pdf/cs/0003055.pdf" target="_blank" rel="external">TnT – A Statistical Part-of-Speech Tagger </a></p>
+</blockquote>
+</li>
+<li><p>关于HMM和CRF的学习算法</p>
+<blockquote>
+<p>各种书籍，资源很多</p>
+</blockquote>
+</li>
+<li>最近几年的分词技术</li>
+</ul>
+<blockquote>
+<p>[1] <a href="http://www.aclweb.org/anthology/P14-1028" target="_blank" rel="external">Max-Margin Tensor Neural Network for Chinese Word Segmentation</a><br>[2] <a href="http://aclweb.org/anthology/D15-1141" target="_blank" rel="external">Long Short-Term Memory Neural Networks for Chinese Word Segmentation</a><br>[3] <a href="http://aclweb.org/anthology/P16-1039" target="_blank" rel="external">Neural Word Segmentation Learning for Chinese</a><br>[4] <a href="https://arxiv.org/pdf/1704.07556.pdf" target="_blank" rel="external">Adversarial Multi-Criteria Learning for Chinese Word Segmentation</a><br>[5] <a href="https://arxiv.org/pdf/1704.07047.pdf" target="_blank" rel="external">Fast and Accurate Neural Word Segmentation for Chinese</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/02/latex/" rel="next" title="实用Latex技能收集">
+                <i class="fa fa-chevron-left"></i> 实用Latex技能收集
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/23/CNN/" rel="prev" title="Convolutional Neural Networks">
+                Convolutional Neural Networks <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/10/17/WS-model/"
+           data-title="分词相关研究" data-url="http://muyeby.github.io/2017/10/17/WS-model/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="muyeby" />
+          <p class="site-author-name" itemprop="name">muyeby</p>
+           
+              <p class="site-description motion-element" itemprop="description">这是一个基于github和hexo的静态blog，用简单的markdown分享和记录自己的想法</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简单分词模型之HMM-amp-amp-CRF"><span class="nav-number">1.</span> <span class="nav-text">简单分词模型之HMM&&CRF</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-基本定义"><span class="nav-number">1.1.</span> <span class="nav-text">1.基本定义:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-图"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1.1  图:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-概率图模型（PGM）"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">1.2  概率图模型（PGM）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-有向概率图介绍"><span class="nav-number">1.1.0.2.0.1.</span> <span class="nav-text">(1) 有向概率图介绍</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HMM模型分词"><span class="nav-number">1.2.</span> <span class="nav-text">2. HMM模型分词</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-HMM的概率图表示"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 HMM的概率图表示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Learning-Stage—-easy-here"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Learning Stage—-easy here</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Decoding-Stage"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Decoding Stage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scoring-Rule"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Scoring Rule</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HMM分词器解码过程"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">HMM分词器解码过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-CRF-分词"><span class="nav-number">1.3.</span> <span class="nav-text">3. CRF 分词</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性条件随机场的简化形式"><span class="nav-number">1.3.1.</span> <span class="nav-text">线性条件随机场的简化形式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Learning-Stage"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Learning Stage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Decoding-Stage-1"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Decoding Stage</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-CRF与逻辑回归"><span class="nav-number">1.3.2.</span> <span class="nav-text">4.1 CRF与逻辑回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-CRF与HMM的比较"><span class="nav-number">1.3.3.</span> <span class="nav-text">4.2 CRF与HMM的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-本节的图模型与LM分词的比较"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.3 本节的图模型与LM分词的比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-当下深度学习中文分词技术"><span class="nav-number">1.4.</span> <span class="nav-text">5. 当下深度学习中文分词技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-一点扩展"><span class="nav-number">1.5.</span> <span class="nav-text">6. 一点扩展</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">muyeby</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"muyeby"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("I5PNzNwEsJC8jTl6quYCKsT4-gzGzoHsz", "KHVS3eqloEbFBA835o01goAK");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
